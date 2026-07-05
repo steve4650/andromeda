@@ -3,9 +3,30 @@
     "tags": "dnf",
     "block": [
       {
+        "name": "update apk repo config",
+        "ansible.builtin.copy": {
+          "src": "repositories",
+          "dest": "/etc/apk/repositories",
+          "owner": "root",
+          "group": "root",
+          "mode": "0644"
+        },
+        "become": "yes"
+      },
+      {
         "name": "Install apk packages",
         "ansible.builtin.package": {
-          "name": ["chrony", "caddy", "wireguard-tools", "git", "rsync", "sway", "firefox"],
+          "name": [
+            "chrony",
+            "caddy",
+            "wireguard-tools",
+            "git",
+            "rsync",
+            "sway",
+            "firefox",
+            "zsh",
+            "mpv"
+          ],
           "state": "present"
         },
         "become": "yes"

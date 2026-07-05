@@ -25,6 +25,39 @@
         "become": "yes"
       },
       {
+        "name": "Create ~/.config directory",
+        "ansible.builtin.file": {
+          "path": "/home/gnuplex/.config",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "gnuplex",
+          "group": "gnuplex"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create ~/.config/sway directory",
+        "ansible.builtin.file": {
+          "path": "/home/gnuplex/.config/sway",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "gnuplex",
+          "group": "gnuplex"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "install sway config",
+        "ansible.builtin.copy": {
+          "src": "sway_config",
+          "dest": "/home/gnuplex/.config/sway/config",
+          "owner": "gnuplex",
+          "group": "gnuplex",
+          "mode": "0644"
+        },
+        "become": "yes"
+      },
+      {
         "name": "Install gnuplex statusbar script",
         "ansible.builtin.copy": {
           "src": "statusbar",
