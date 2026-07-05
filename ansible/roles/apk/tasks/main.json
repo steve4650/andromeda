@@ -26,7 +26,10 @@
             "sway",
             "firefox",
             "zsh",
-            "mpv"
+            "mpv",
+            "pipewire",
+            "wireplumber",
+            "doas"
           ],
           "state": "present"
         },
