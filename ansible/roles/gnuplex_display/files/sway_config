@@ -1,0 +1,24 @@
+set $mod super
+
+bindsym $mod+t exec foot
+bindsym ctrl+shift+t exec foot
+bindsym $mod+r reload
+bindsym $mod+q kill
+floating_modifier $mod normal
+bindsym $mod+f fullscreen
+
+bar {
+    font Deja Vu Sans Mono 20
+    status_command i3status
+}
+
+for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
+bindsym $mod+m exec rofi -show run
+
+workspace_layout stacking
+
+exec /home/gnuplex/.local/bin/gnuplex-run
+exec /home/gnuplex/.local/bin/statusbar
+exec /home/gnuplex/.local/bin/wallpaper
+
+seat seat0 hide_cursor 3000
