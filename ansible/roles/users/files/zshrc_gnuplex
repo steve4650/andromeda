@@ -1,0 +1,103 @@
+# if not running interactively, don't do anything so scp works correctly
+[[ $- == *i* ]] || return
+
+# shell settings
+set -o vi
+setopt appendhistory
+setopt RM_STAR_SILENT
+setopt PROMPT_SUBST
+setopt BASH_AUTO_LIST
+export PS1='%B%F{magenta}%n@%M %~%b%f%B%F{magenta}$(gitstatus)%b%f%B%F{magenta} # %b%f'
+function command_not_found_handler {
+  echo "Command not found: $0"
+  return 1
+}
+
+# env vars
+export DENO_INSTALL="$HOME/.deno"
+export EDITOR="/usr/bin/vi"
+export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/go/bin:$HOME/.cargo/bin/:$HOME/.deno/bin:$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+export LESSHISTFILE="/dev/null"
+export HISTFILE=~/.zshhistfile
+export DISABLE_AUTO_TITLE="true"
+export HISTSIZE=10000
+export SAVEHIST=10000
+
+# aliases 
+which eza &>/dev/null && alias ls='eza -alg --git'
+alias ap='ansible-playbook'
+alias yj="ruby -e 'require \"yaml\"; require \"json\"; print YAML.load(ARGF.read).to_json'"
+alias less='less -N'
+alias cls='clear'
+alias hist='cat -n ~/.zshhistfile'
+alias tmuxh='tmux new-session \; split-window -v \; select-pane -t 0'
+alias tmuxv='tmux new-session \; split-window -h \; select-pane -t 0'
+alias tmux4='tmux new-session \; split-window -v \; split-window -h \; select-pane -t 0 \; split-window -h \; select-pane -t 0'
+alias cp='cp -v'
+alias mv='mv -v'
+alias rm='rm -v'
+alias mkdir='mkdir -v'
+alias chmod='chmod -v'
+alias chown='chown -v'
+alias chcon='chcon -v'
+alias sumcol='paste -sd+ | bc'
+alias python='python3'
+alias py='python3'
+alias fastgit='git add .; git commit -m $(date +%s); git push origin $(git branch | cut -d" " -f 2)'
+alias pullorigin='git fetch; git merge origin/$(git branch | cut -d" " -f 2) --ff-only'
+alias tmuxh='tmux new-session \; split-window -v \; select-pane -t 0'
+alias tmuxv='tmux new-session \; split-window -h \; select-pane -t 0'
+alias tmux4='tmux new-session \; split-window -v \; split-window -h \; select-pane -t 0 \; split-window -h \; select-pane -t 0'
+alias sqlite='sqlite3 -header -column'
+alias df='df -hT'
+alias ip='ip -c'
+alias gitroot='cd "$(git rev-parse --show-toplevel)"'
+alias coinflip='shuf -r -n 1 -e heads tails'
+alias coin='shuf -r -n 1 -e heads tails'
+alias rake='bundle exec rake'
+alias rails='bundle exec rails'
+
+# directory shortcuts
+hash -d down=~/Downloads
+hash -d doc=~/Documents
+hash -d book=~/Documents/books
+hash -d games=~/Documents/games
+hash -d books=~/Documents/books
+hash -d pic=~/Pictures
+hash -d pics=~/Pictures
+hash -d git=~/git
+hash -d mutiny=~/gitlab/mutiny
+hash -d ext=/mnt/externalssd
+
+function sorti {
+  ex -s +'%!sort' -cxa "$1"
+}
+
+function shellfix {
+  shellcheck --format diff --shell bash "$1" | patch -p1 "$1"
+}
+
+function gitstatus {
+  branch=$(git branch --show-current 2>/dev/null)
+  s=$(git status -s 2>/dev/null | wc -l)
+  if [ "$branch" != "" ]
+  then
+    if [ "$s" -eq "0" ]
+    then
+      s="💟"
+    else
+      s="💢"
+    fi
+    echo " $branch $s"
+  fi
+}
+
+# bun
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "/home/steve/.bun/_bun" ] && source "/home/steve/.bun/_bun"
+
+alias sudo=doas
+
+pgrep sway || sway-run
