@@ -9,7 +9,7 @@
           "state": "directory",
           "mode": "0700",
           "owner": "root",
-          "group": "root"
+          "group": "root",
         },
         "become": "yes"
       },
@@ -20,7 +20,8 @@
           "dest": "/etc/wireguard/andromeda.conf",
           "owner": "root",
           "group": "root",
-          "mode": "0600"
+          "mode": "0600",
+          "backup": true
         },
         "become": "yes"
       },
@@ -31,7 +32,8 @@
           "dest": "/etc/wireguard/ischia.priv",
           "owner": "root",
           "group": "root",
-          "mode": "0600"
+          "mode": "0600",
+          "backup": true
         },
         "become": "yes"
       },
@@ -42,7 +44,8 @@
           "dest": "/etc/wireguard/ischia.pub",
           "owner": "root",
           "group": "root",
-          "mode": "0600"
+          "mode": "0600",
+          "backup": true
         },
         "become": "yes"
       },
@@ -53,7 +56,8 @@
           "content": "#!/sbin/openrc-run\ndescription=\"Andromeda WireGuard VPN\"\n\ndepend() {\n    need net\n    use dns\n}\n\nstart() {\n    ebegin \"Starting andromeda\"\n    /usr/bin/wg-quick up /etc/wireguard/andromeda.conf\n    eend $?\n}\n\nstop() {\n    ebegin \"Stopping andromeda\"\n    /usr/bin/wg-quick down /etc/wireguard/andromeda.conf\n    eend $?\n}\n",
           "mode": "0755",
           "owner": "root",
-          "group": "root"
+          "group": "root",
+          "backup": true
         },
         "register": "andromeda_service",
         "become": "yes"

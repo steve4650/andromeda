@@ -13,7 +13,8 @@
           "seuser": "system_u",
           "serole": "object_r",
           "setype": "etc_t",
-          "selevel": "s0"
+          "selevel": "s0",
+          "backup": true
         },
         "register": "sshdconf",
         "become": "yes"

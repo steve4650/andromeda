@@ -25,7 +25,8 @@
           "dest": "/home/steve/.zshrc",
           "owner": "steve",
           "group": "steve",
-          "mode": "0644"
+          "mode": "0644",
+          "backup": true
         },
         "become": "yes"
       },
@@ -36,7 +37,8 @@
           "dest": "/home/gnuplex/.zshrc",
           "owner": "gnuplex",
           "group": "gnuplex",
-          "mode": "0644"
+          "mode": "0644",
+          "backup": true
         },
         "become": "yes"
       }
