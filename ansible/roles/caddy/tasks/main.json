@@ -8,7 +8,8 @@
           "src": "Caddyfile",
           "dest": "/etc/caddy/Caddyfile",
           "owner": "root",
-          "group": "root"
+          "group": "root",
+          "backup": true
         },
         "register": "caddyfile",
         "become": "yes"

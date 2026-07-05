@@ -21,22 +21,24 @@
       {
         "name": "install steve zshrc",
         "ansible.builtin.copy": {
-          "src": "zshrc",
+          "src": "zshrc_steve",
           "dest": "/home/steve/.zshrc",
           "owner": "steve",
           "group": "steve",
-          "mode": "0644"
+          "mode": "0644",
+          "backup": true
         },
         "become": "yes"
       },
       {
         "name": "install gnuplex zshrc",
         "ansible.builtin.copy": {
-          "src": "zshrc",
+          "src": "zshrc_gnuplex",
           "dest": "/home/gnuplex/.zshrc",
           "owner": "gnuplex",
           "group": "gnuplex",
-          "mode": "0644"
+          "mode": "0644",
+          "backup": true
         },
         "become": "yes"
       }

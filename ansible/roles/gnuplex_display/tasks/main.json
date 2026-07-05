@@ -53,7 +53,8 @@
           "dest": "/home/gnuplex/.config/sway/config",
           "owner": "gnuplex",
           "group": "gnuplex",
-          "mode": "0644"
+          "mode": "0644",
+          "backup": true
         },
         "become": "yes"
       },
@@ -64,7 +65,8 @@
           "dest": "/home/gnuplex/.local/bin/statusbar",
           "owner": "gnuplex",
           "group": "gnuplex",
-          "mode": "0744"
+          "mode": "0744",
+          "backup": true
         },
         "become": "yes"
       },
@@ -75,7 +77,8 @@
           "dest": "/home/gnuplex/.local/bin/sway-run",
           "owner": "gnuplex",
           "group": "gnuplex",
-          "mode": "0744"
+          "mode": "0744",
+          "backup": true
         },
         "become": "yes"
       },
@@ -86,7 +89,8 @@
           "dest": "/home/gnuplex/.local/bin/wallpaper",
           "owner": "gnuplex",
           "group": "gnuplex",
-          "mode": "0744"
+          "mode": "0744",
+          "backup": true
         },
         "become": "yes"
       }
