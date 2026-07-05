@@ -16,7 +16,17 @@
       {
         "name": "Install apk packages",
         "ansible.builtin.package": {
-          "name": ["chrony", "caddy", "wireguard-tools", "git", "rsync", "sway", "firefox", "zsh", "mpv"],
+          "name": [
+            "chrony",
+            "caddy",
+            "wireguard-tools",
+            "git",
+            "rsync",
+            "sway",
+            "firefox",
+            "zsh",
+            "mpv"
+          ],
           "state": "present"
         },
         "become": "yes"
