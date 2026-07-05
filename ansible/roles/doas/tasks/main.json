@@ -1,0 +1,19 @@
+[
+  {
+    "tags": "doas",
+    "block": [
+      {
+        "name": "install doas.conf",
+        "ansible.builtin.copy": {
+          "src": "doas.conf",
+          "dest": "/etc/doas.conf",
+          "owner": "root",
+          "group": "root",
+          "mode": "0644",
+          "backup": true
+        },
+        "become": "yes"
+      }
+    ]
+  }
+]
