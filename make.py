@@ -73,6 +73,7 @@ def iter_ansible_copy_tasks(node, location="root"):
 
 def lint_ansible() -> None:
     """lint Ansible JSON tasks for required ansible.builtin.copy options."""
+    print("+ linting Ansible tasks...")
     missing = []
     for path in sorted(ROOT.glob("ansible/roles/**/tasks/*.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
