@@ -10,7 +10,8 @@
       { "name": "ntp" },
       { "name": "andromeda" },
       { "name": "caddy" },
-      { "name": "gnuplex_display" }
+      { "name": "gnuplex_display" },
+      { "name": "doas" }
     ]
   }
 ]

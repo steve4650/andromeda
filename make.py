@@ -71,6 +71,37 @@ def iter_ansible_copy_tasks(node, location="root"):
             yield from iter_ansible_copy_tasks(value, f"{location}.{key}")
 
 
+def lint_ansible_role_dirs() -> None:
+    """lint that ansible/roles dirs match roles in deploy.json."""
+    deploy_path = ROOT / "ansible" / "playbooks" / "deploy.json"
+    data = json.loads(deploy_path.read_text(encoding="utf-8"))
+    expected_roles = set()
+    for play in data:
+        if isinstance(play, dict):
+            for role in play.get("roles", []):
+                if isinstance(role, dict) and "name" in role:
+                    expected_roles.add(role["name"])
+                elif isinstance(role, str):
+                    expected_roles.add(role)
+
+    actual_roles = {
+        entry.name for entry in (ROOT / "ansible" / "roles").iterdir() if entry.is_dir()
+    }
+
+    missing = expected_roles - actual_roles
+    extra = actual_roles - expected_roles
+    if missing or extra:
+        if missing:
+            print("ERROR: missing ansible role dirs for deploy.json roles:")
+            for role in sorted(missing):
+                print(f"  - {role}")
+        if extra:
+            print("ERROR: some ansible role dirs not listed in deploy.json:")
+            for role in sorted(extra):
+                print(f"  - {role}")
+        raise SystemExit(1)
+
+
 def lint_ansible() -> None:
     """lint Ansible JSON tasks for required ansible.builtin.copy options."""
     print("+ linting Ansible tasks...")
@@ -88,6 +119,8 @@ def lint_ansible() -> None:
                 f"{path}:{location}: ansible.builtin.copy must set backup: true (found {backup_value!r})"
             )
         raise SystemExit(1)
+
+    lint_ansible_role_dirs()
 
 
 def lint() -> None:
