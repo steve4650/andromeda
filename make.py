@@ -2,7 +2,7 @@
 """Task runner for davisgroup.uk.
 
 Usage:
-    uv run make.py [task]
+    make.py [task]
 
 Run with no arguments to see available tasks.
 """
@@ -142,11 +142,10 @@ tasks = {
 
 
 def print_help() -> None:
-    print("Usage: uv run make.py [task]\n")
+    print("Usage: make.py [task]\n")
     print("Available tasks:")
     for name in sorted(tasks):
         print(f"  {name}")
-    print("\nDefault task: fmt")
 
 
 def main() -> int:
