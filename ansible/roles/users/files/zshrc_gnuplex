@@ -100,4 +100,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias sudo=doas
 
-pgrep sway || sway-run
+pgrep sway &>/dev/null || sway-run
