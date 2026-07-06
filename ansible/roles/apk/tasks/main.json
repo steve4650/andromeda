@@ -18,7 +18,6 @@
         "name": "Install apk packages",
         "ansible.builtin.package": {
           "name": [
-            "chrony",
             "caddy",
             "wireguard-tools",
             "git",
