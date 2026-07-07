@@ -7,7 +7,7 @@
       { "name": "apk" },
       { "name": "users" },
       { "name": "sshd" },
-      { "name": "ntp" },
+      { "name": "chrony" },
       { "name": "andromeda" },
       { "name": "caddy" },
       { "name": "gnuplex_display" },
