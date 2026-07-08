@@ -21,15 +21,19 @@ if ip6_response.status_code != 200:
 ip6 = ip6_response.text.strip()
 logging.info(f"Retrieved IPv6 address: {ip6}")
 
+# Test mod
 # Update Cloudflare DNS record with new IP
-url = f"https://api.cloudflare.com/client/v4/zones/{env['ZONE_ID']}/dns_records/{env['DNS_RECORD_ID']}"
 headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {env['CLOUDFLARE_API_TOKEN']}",
 }
-data = {"content": ip4}
 
-ip4_response = requests.patch(url, headers=headers, json={"type": "A", "content": ip4})
+
+ip4_response = requests.patch(
+    f"https://api.cloudflare.com/client/v4/zones/{env['ZONE_ID']}/dns_records/{env['A_DNS_RECORD_ID']}",
+    headers=headers,
+    json={"type": "A", "content": ip4},
+)
 if ip4_response.ok:
     logging.info(f"Successfully updated IPv4 DNS record to {ip4}")
 else:
@@ -39,7 +43,9 @@ else:
     sys.exit(1)
 
 ip6_response = requests.patch(
-    url, headers=headers, json={"type": "AAAA", "content": ip6}
+    f"https://api.cloudflare.com/client/v4/zones/{env['ZONE_ID']}/dns_records/{env['AAAA_DNS_RECORD_ID']}",
+    headers=headers,
+    json={"type": "AAAA", "content": ip6},
 )
 if ip6_response.ok:
     logging.info(f"Successfully updated IPv6 DNS record to {ip6}")
