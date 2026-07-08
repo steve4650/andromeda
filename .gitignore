@@ -4,7 +4,9 @@ node_modules
 .venv
 __pycache__
 **/.vite
-ansible/roles/andromeda/files/*
+ansible/roles/andromeda/files/andromeda*
+ansible/roles/andromeda/files/ischia*
 .ruff_cache
 .secrets.json
 secrets.json
+**/.env
