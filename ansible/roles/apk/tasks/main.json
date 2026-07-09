@@ -29,7 +29,8 @@
             "mpv",
             "pipewire",
             "wireplumber",
-            "doas"
+            "doas",
+            "uv"
           ],
           "state": "present"
         },
