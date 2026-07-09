@@ -32,7 +32,7 @@ def deploy_test() -> None:
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
     sh(
         "ansible-playbook",
-        "-K",
+        "--ask-vault-pass",
         "--diff",
         "--check",
         "-vv",
@@ -46,7 +46,7 @@ def deploy() -> None:
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
     sh(
         "ansible-playbook",
-        "-K",
+        "--ask-vault-pass",
         str(ROOT / "ansible" / "playbooks" / "deploy.json"),
         env=env,
     )

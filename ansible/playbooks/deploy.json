@@ -3,6 +3,9 @@
     "name": "ischia deployment",
     "hosts": "targets",
     "strategy": "free",
+    "vars_files": [
+      "secrets.yml"
+    ],
     "roles": [
       { "name": "apk" },
       { "name": "users" },
