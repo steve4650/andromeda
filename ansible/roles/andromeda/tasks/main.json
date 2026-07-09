@@ -15,7 +15,7 @@
       },
       {
         "name": "Install WireGuard interface configuration",
-        "ansible.builtin.copy": {
+        "ansible.builtin.template": {
           "src": "andromeda.conf",
           "dest": "/etc/wireguard/andromeda.conf",
           "owner": "root",
@@ -27,7 +27,7 @@
       },
       {
         "name": "Install Andromeda private key",
-        "ansible.builtin.copy": {
+        "ansible.builtin.template": {
           "src": "ischia.priv",
           "dest": "/etc/wireguard/ischia.priv",
           "owner": "root",
@@ -39,7 +39,7 @@
       },
       {
         "name": "Install Andromeda public key",
-        "ansible.builtin.copy": {
+        "ansible.builtin.template": {
           "src": "ischia.pub",
           "dest": "/etc/wireguard/ischia.pub",
           "owner": "root",

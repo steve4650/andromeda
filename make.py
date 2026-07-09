@@ -153,7 +153,7 @@ def main() -> int:
         print_help()
         return 0
 
-    task_name = sys.argv[1]
+    task_name = sys.argv[1].lower()
 
     task = tasks.get(task_name)
     if task is None:
