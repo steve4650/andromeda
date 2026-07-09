@@ -21,13 +21,11 @@ if ip6_response.status_code != 200:
 ip6 = ip6_response.text.strip()
 logging.info(f"Retrieved IPv6 address: {ip6}")
 
-# Test mod
 # Update Cloudflare DNS record with new IP
 headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {env['CLOUDFLARE_API_TOKEN']}",
 }
-
 
 ip4_response = requests.patch(
     f"https://api.cloudflare.com/client/v4/zones/{env['ZONE_ID']}/dns_records/{env['A_DNS_RECORD_ID']}",
