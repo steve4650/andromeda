@@ -57,19 +57,14 @@ def update_record(zone_id, record_id, record_type, ip, headers):
 def main():
     args = parse_args()
 
-    missing_vars = [
-        var
-        for var in (
-            "CLOUDFLARE_API_TOKEN",
-            "ZONE_ID",
-            "A_DNS_RECORD_ID",
-            "AAAA_DNS_RECORD_ID",
-        )
-        if not os.getenv(var)
-    ]
-    if missing_vars:
+    if (
+        not os.getenv("CLOUDFLARE_API_TOKEN")
+        or not os.getenv("ZONE_ID")
+        or ((not os.getenv("A_DNS_RECORD_ID")) and (not args.ipv6_only))
+        or ((not os.getenv("AAAA_DNS_RECORD_ID")) and (not args.ipv4_only))
+    ):
         logging.error(
-            "Missing required environment variables: %s", ", ".join(missing_vars)
+            "Missing required environment variables: CLOUDFLARE_API_TOKEN, ZONE_ID, A_DNS_RECORD_ID, AAAA_DNS_RECORD_ID must all be defined."
         )
         sys.exit(1)
 
