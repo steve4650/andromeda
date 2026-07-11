@@ -1,0 +1,14 @@
+[Unit]
+Description=Andromeda WireGuard VPN
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/wg-quick up /etc/wireguard/andromeda.conf
+ExecStop=/usr/bin/wg-quick down /etc/wireguard/andromeda.conf
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

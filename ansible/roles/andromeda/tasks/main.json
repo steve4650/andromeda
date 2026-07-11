@@ -9,42 +9,26 @@
           "state": "directory",
           "mode": "0700",
           "owner": "root",
-          "group": "root"
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "etc_t",
+          "selevel": "s0"
         },
         "become": "yes"
       },
       {
         "name": "Install WireGuard interface configuration",
         "ansible.builtin.template": {
-          "src": "andromeda.conf",
+          "src": "andromeda_conf",
           "dest": "/etc/wireguard/andromeda.conf",
           "owner": "root",
           "group": "root",
           "mode": "0600",
-          "backup": true
-        },
-        "become": "yes"
-      },
-      {
-        "name": "Install Andromeda private key",
-        "ansible.builtin.template": {
-          "src": "ischia.priv",
-          "dest": "/etc/wireguard/ischia.priv",
-          "owner": "root",
-          "group": "root",
-          "mode": "0600",
-          "backup": true
-        },
-        "become": "yes"
-      },
-      {
-        "name": "Install Andromeda public key",
-        "ansible.builtin.template": {
-          "src": "ischia.pub",
-          "dest": "/etc/wireguard/ischia.pub",
-          "owner": "root",
-          "group": "root",
-          "mode": "0600",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "etc_t",
+          "selevel": "s0",
           "backup": true
         },
         "become": "yes"
@@ -59,9 +43,27 @@
           "group": "root",
           "backup": true
         },
-        "register": "andromeda_service",
-        "become": "yes"
+        "register": "andromeda_openrc_service",
+        "become": "yes",
+        "when": "ansible_facts['os_family'] == 'Alpine'"
+      },{
+        "name": "Create andromeda systemd service",
+        "ansible.builtin.copy": {
+          "src": "andromeda.service",
+          "dest": "/etc/systemd/system/andromeda.service",
+          "mode": "0600",
+          "owner": "root",
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "systemd_unit_file_t",
+          "selevel": "s0"
+        },
+        "register": "andromeda_systemd_service",
+        "become": "yes",
+        "when": "ansible_facts['os_family'] != 'Alpine'"
       },
+
       {
         "name": "Enable and start andromeda service",
         "ansible.builtin.service": {
@@ -69,31 +71,10 @@
           "enabled": true,
           "state": "started"
         },
-        "when": "andromeda_service.changed",
+        "when": "andromeda_systemd_service.changed or andromeda_openrc_service.changed",
         "become": "yes"
       },
-      {
-        "name": "Create /home/steve/.local directory",
-        "ansible.builtin.file": {
-          "path": "/home/steve/.local",
-          "state": "directory",
-          "mode": "0755",
-          "owner": "steve",
-          "group": "steve"
-        },
-        "become": "yes"
-      },
-      {
-        "name": "Create /home/steve/.local/bin directory",
-        "ansible.builtin.file": {
-          "path": "/home/steve/.local/bin",
-          "state": "directory",
-          "mode": "0755",
-          "owner": "steve",
-          "group": "steve"
-        },
-        "become": "yes"
-      },
+      
       {
         "name": "Clone ischia repository",
         "ansible.builtin.git": {
@@ -102,7 +83,8 @@
           "clone": true
         },
         "become": "yes",
-        "become_user": "steve"
+        "become_user": "steve",
+        "when": "ansible_hostname in groups['ischia']"
       },
       {
         "name": "Install VPN update cron job for steve",
@@ -112,7 +94,8 @@
           "minute": "1,16,31,46",
           "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv --directory /home/steve/.local/bin/ischia/ansible/roles/andromeda/files run vpn_update.py --ipv4-only"
         },
-        "become": "yes"
+        "become": "yes",
+        "when": "ansible_hostname in groups['ischia']"
       }
     ]
   }
