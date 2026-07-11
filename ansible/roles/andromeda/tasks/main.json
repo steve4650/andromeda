@@ -101,7 +101,8 @@
           "dest": "/home/steve/.local/bin/ischia",
           "clone": true
         },
-        "become": "yes"
+        "become": "yes",
+        "become_user": "steve"
       },
       {
         "name": "Install VPN update cron job for steve",
@@ -109,7 +110,7 @@
           "name": "Update Cloudflare IPv4 DNS record",
           "user": "steve",
           "minute": "1,16,31,46",
-          "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv run ansible/roles/andromeda/files/vpn_update.py --ipv4-only"
+          "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv run /home/steve/.local/bin/ischia/ansible/roles/andromeda/files/vpn_update.py --ipv4-only"
         },
         "become": "yes"
       }
