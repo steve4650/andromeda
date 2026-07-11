@@ -28,15 +28,6 @@
         },
         "when": "sshdconf.changed",
         "become": "yes"
-      },
-      {
-        "name": "Enable rsyncd service",
-        "ansible.builtin.service": {
-          "name": "rsyncd",
-          "state": "started",
-          "enabled": true
-        },
-        "become": "yes"
       }
     ]
   }
