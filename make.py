@@ -32,7 +32,7 @@ def deploy_test() -> None:
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
     sh(
         "ansible-playbook",
-        "-K",
+        "--ask-vault-pass",
         "--diff",
         "--check",
         "-vv",
@@ -46,7 +46,7 @@ def deploy() -> None:
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
     sh(
         "ansible-playbook",
-        "-K",
+        "--ask-vault-pass",
         str(ROOT / "ansible" / "playbooks" / "deploy.json"),
         env=env,
     )
@@ -153,7 +153,7 @@ def main() -> int:
         print_help()
         return 0
 
-    task_name = sys.argv[1]
+    task_name = sys.argv[1].lower()
 
     task = tasks.get(task_name)
     if task is None:

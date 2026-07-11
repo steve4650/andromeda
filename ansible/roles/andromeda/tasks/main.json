@@ -15,7 +15,7 @@
       },
       {
         "name": "Install WireGuard interface configuration",
-        "ansible.builtin.copy": {
+        "ansible.builtin.template": {
           "src": "andromeda.conf",
           "dest": "/etc/wireguard/andromeda.conf",
           "owner": "root",
@@ -27,7 +27,7 @@
       },
       {
         "name": "Install Andromeda private key",
-        "ansible.builtin.copy": {
+        "ansible.builtin.template": {
           "src": "ischia.priv",
           "dest": "/etc/wireguard/ischia.priv",
           "owner": "root",
@@ -39,7 +39,7 @@
       },
       {
         "name": "Install Andromeda public key",
-        "ansible.builtin.copy": {
+        "ansible.builtin.template": {
           "src": "ischia.pub",
           "dest": "/etc/wireguard/ischia.pub",
           "owner": "root",
@@ -52,8 +52,8 @@
       {
         "name": "Create andromeda OpenRC service",
         "ansible.builtin.copy": {
+          "src": "andromeda_openrc",
           "dest": "/etc/init.d/andromeda",
-          "content": "#!/sbin/openrc-run\ndescription=\"Andromeda WireGuard VPN\"\n\ndepend() {\n    need net\n    use dns\n}\n\nstart() {\n    ebegin \"Starting andromeda\"\n    /usr/bin/wg-quick up /etc/wireguard/andromeda.conf\n    eend $?\n}\n\nstop() {\n    ebegin \"Stopping andromeda\"\n    /usr/bin/wg-quick down /etc/wireguard/andromeda.conf\n    eend $?\n}\n",
           "mode": "0755",
           "owner": "root",
           "group": "root",
@@ -70,6 +70,48 @@
           "state": "started"
         },
         "when": "andromeda_service.changed",
+        "become": "yes"
+      },
+      {
+        "name": "Create /home/steve/.local directory",
+        "ansible.builtin.file": {
+          "path": "/home/steve/.local",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "steve",
+          "group": "steve"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /home/steve/.local/bin directory",
+        "ansible.builtin.file": {
+          "path": "/home/steve/.local/bin",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "steve",
+          "group": "steve"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Clone ischia repository",
+        "ansible.builtin.git": {
+          "repo": "https://github.com/steve4650/ischia.git",
+          "dest": "/home/steve/.local/bin/ischia",
+          "clone": true
+        },
+        "become": "yes",
+        "become_user": "steve"
+      },
+      {
+        "name": "Install VPN update cron job for steve",
+        "ansible.builtin.cron": {
+          "name": "Update Cloudflare IPv4 DNS record",
+          "user": "steve",
+          "minute": "1,16,31,46",
+          "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv run /home/steve/.local/bin/ischia/ansible/roles/andromeda/files/vpn_update.py --ipv4-only"
+        },
         "become": "yes"
       }
     ]

@@ -21,5 +21,9 @@ jobs:
         run: |
           uv run make.py lint
       - name: check for TODOs
-        run: |
-          git ls-files | grep -v 'test\.yml' | xargs grep -Ii todo | wc -l | uv run python3 -c "import sys; sys.exit(0 if sys.stdin.read().strip() == '0' else 1)"
+        run: >
+          git ls-files 
+          | grep -v 'test\.yml' 
+          | xargs grep -Ii todo 
+          | wc -l 
+          | uv run python3 -c "import sys; sys.exit(0 if sys.stdin.read().strip() == '0' else 1)"
