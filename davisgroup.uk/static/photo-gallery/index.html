@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>davisgroup.uk Photo Gallery</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 10px;
+        padding: 20px;
+      }
+
+      .gallery img {
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .gallery img:hover {
+        transform: scale(1.05);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal img {
+        max-width: 90%;
+        max-height: 90%;
+      }
+
+      .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 style="text-align: center; padding: 20px">Photo Gallery</h1>
+    <div class="gallery">
+      <img
+        src="/photo-gallery/desert_final_compressed.avif"
+        alt="winter desert"
+        onclick="openModal(this.src)"
+      />
+      <img src="/photo-gallery/IMG_0812.avif" alt="flower" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_0985.avif" alt="sunset leaves" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_1074.avif" alt="raspberry bush" onclick="openModal(this.src)" />
+      <img
+        src="/photo-gallery/IMG_1740.avif"
+        alt="wing of plane at sunset"
+        onclick="openModal(this.src)"
+      />
+      <img src="/photo-gallery/IMG_2062.avif" alt="summer dock" onclick="openModal(this.src)" />
+      <img
+        src="/photo-gallery/IMG_2123.avif"
+        alt="gatsby lights at night"
+        onclick="openModal(this.src)"
+      />
+      <img
+        src="/photo-gallery/IMG_2202.avif"
+        alt="white lights at night"
+        onclick="openModal(this.src)"
+      />
+      <img src="/photo-gallery/IMG_2374.avif" alt="blurry view" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_2626.avif" alt="cat in window" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_2641.avif" alt="cat in drawer" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_2815.avif" alt="sunset lake" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_2889.avif" alt="devil's lake" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_2926.avif" alt="burning fire" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_3038.avif" alt="cat in window 2" onclick="openModal(this.src)" />
+      <img
+        src="/photo-gallery/IMG_3061.avif"
+        alt="stormy red light"
+        onclick="openModal(this.src)"
+      />
+      <img src="/photo-gallery/IMG_3235.avif" alt="jersey beach" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_3239.avif" alt="jersey beach 2" onclick="openModal(this.src)" />
+      <img src="/photo-gallery/IMG_3272.avif" alt="tower of pain" onclick="openModal(this.src)" />
+      <img
+        src="/photo-gallery/IMG_3327.avif"
+        alt="casino pier coaster"
+        onclick="openModal(this.src)"
+      />
+      <img src="/photo-gallery/IMG_3334.avif" alt="jersey motel" onclick="openModal(this.src)" />
+      <img
+        src="/photo-gallery/IMG_3423.avif"
+        alt="mendota moonrise"
+        onclick="openModal(this.src)"
+      />
+      <img src="/photo-gallery/IMG_3424.avif" alt="lights on lake" onclick="openModal(this.src)" />
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="modalImg" src="" alt="" />
+    </div>
+
+    <script>
+      function openModal(src) {
+        document.getElementById("myModal").style.display = "flex";
+        document.getElementById("modalImg").src = src;
+      }
+
+      function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+      }
+
+      // Close modal when clicking outside the image
+      document.getElementById("myModal").onclick = function (event) {
+        if (event.target === this) {
+          closeModal();
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  font: 1em sans-serif;
+  padding: 1%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.App > * {
+  margin-top: 1%;
+}
+
+.title {
+  font-weight: bold;
+}
+
+button,
+input[type="button"] {
+  border: 1px solid black;
+  background-color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="button"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#demo-map {
+  width: 300px;
+  height: 300px;
+}
+
+a {
+  color: black;
+}
+
+.recent {
+  margin-top: 2%;
+}
+
+.recent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
+.recent-header h2 {
+  font: 1em sans-serif;
+  font-weight: bold;
+  margin: 0;
+}
+
+.recent ul {
+  list-style: none;
+  padding: 0;
+  margin: 1% 0 0 0;
+}
+
+.recent li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5% 0;
+  border-top: 1px solid black;
+}
+
+.entry-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.entry-label {
+  display: block;
+}
+
+.entry-note {
+  margin: 0.5em 0 0 0;
+  white-space: pre-wrap;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 0.5em;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.icon-button {
+  border: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px;
+}
+
+.entry-edit-note textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  font: inherit;
+  margin-top: 0.5em;
+}
+
+.note-buttons {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.5em;
+}

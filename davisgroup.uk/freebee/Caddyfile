@@ -1,0 +1,7 @@
+http://localhost:50000 {
+	file_server /api/* {
+		root ./api	
+		precompressed gzip
+	}
+	reverse_proxy localhost:5173
+}
