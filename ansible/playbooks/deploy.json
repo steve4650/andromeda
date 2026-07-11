@@ -1,7 +1,7 @@
 [
   {
     "name": "ischia deployment",
-    "hosts": "targets",
+    "hosts": "all",
     "strategy": "free",
     "vars_files": ["../vars/secrets.yml"],
     "roles": [

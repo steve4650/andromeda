@@ -17,7 +17,7 @@
           "name": "deploy"
         },
         "become": "yes",
-        "when": "ansible_hostname in groups['ischia']"
+        "when": "ansible_hostname in groups['ischia_group']"
       },
       {
         "name": "Create gnuplex user",

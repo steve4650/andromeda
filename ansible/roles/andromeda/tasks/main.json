@@ -85,7 +85,7 @@
         },
         "become": "yes",
         "become_user": "steve",
-        "when": "ansible_hostname in groups['ischia']"
+        "when": "ansible_hostname in groups['ischia_group']"
       },
       {
         "name": "Install VPN update cron job for steve",
@@ -96,7 +96,7 @@
           "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv --directory /home/steve/.local/bin/ischia/ansible/roles/andromeda/files run vpn_update.py --ipv4-only"
         },
         "become": "yes",
-        "when": "ansible_hostname in groups['ischia']"
+        "when": "ansible_hostname in groups['ischia_group']"
       }
     ]
   }
