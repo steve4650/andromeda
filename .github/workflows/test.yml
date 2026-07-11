@@ -17,9 +17,12 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - name: lint the code
+      - name: lint code and data
         run: |
           uv run make.py lint
+      - name: run frontend build			      
+        run: |						      
+          uv run make.py build			
       - name: check for TODOs
         run: >
           git ls-files 
