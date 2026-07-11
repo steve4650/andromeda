@@ -1,0 +1,241 @@
+[
+  {
+    "tags": "static_Files",
+    "block": [
+      {
+        "name": "Load secret variables",
+        "ansible.builtin.include_vars": {
+          "file": "{{ playbook_dir }}/../../.secrets.json"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Decode deploy SSH keys",
+        "ansible.builtin.set_fact": {
+          "deploy_ssh_private_key": "{{ lookup('ansible.builtin.vars', 'id_deploy') | from_json }}",
+          "deploy_ssh_public_key": "{{ lookup('ansible.builtin.vars', 'id_deploy.pub') | from_json }}"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /var/www/html/",
+        "ansible.builtin.file": {
+          "path": "/var/www/html",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "root",
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "httpd_sys_content_t",
+          "selevel": "s0"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /var/www/html-predeploy/",
+        "ansible.builtin.file": {
+          "path": "/var/www/html-predeploy",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "deploy",
+          "group": "deploy",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "httpd_sys_content_t",
+          "selevel": "s0"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /var/www/secret/",
+        "ansible.builtin.file": {
+          "path": "/var/www/secret",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "root",
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "httpd_sys_content_t",
+          "selevel": "s0"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /var/www/secret-predeploy/",
+        "ansible.builtin.file": {
+          "path": "/var/www/secret-predeploy",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "deploy",
+          "group": "deploy",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "httpd_sys_content_t",
+          "selevel": "s0"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create deploy SSH directory",
+        "ansible.builtin.file": {
+          "path": "/home/deploy/.ssh",
+          "state": "directory",
+          "mode": "0700",
+          "owner": "deploy",
+          "group": "deploy"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Install deploy SSH config",
+        "ansible.builtin.copy": {
+          "dest": "/home/deploy/.ssh/config",
+          "src": "ssh_config",
+          "mode": "0644",
+          "owner": "deploy",
+          "group": "deploy"
+        },
+        "become": "yes",
+        "become_user": "deploy"
+      },
+
+      {
+        "name": "Install deploy SSH private key",
+        "ansible.builtin.copy": {
+          "dest": "/home/deploy/.ssh/id_deploy",
+          "content": "{{ deploy_ssh_private_key }}",
+          "mode": "0600",
+          "owner": "deploy",
+          "group": "deploy"
+        },
+        "become": "yes",
+        "become_user": "deploy"
+      },
+      {
+        "name": "Install deploy SSH public key",
+        "ansible.builtin.copy": {
+          "dest": "/home/deploy/.ssh/id_deploy.pub",
+          "content": "{{ deploy_ssh_public_key }}",
+          "mode": "0644",
+          "owner": "deploy",
+          "group": "deploy"
+        },
+        "become": "yes",
+        "become_user": "deploy"
+      },
+      {
+        "name": "Create deploy git working directory",
+        "ansible.builtin.file": {
+          "path": "/home/deploy/git",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "deploy",
+          "group": "deploy"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Clone davisgroup.uk repository for deploy",
+        "ansible.builtin.git": {
+          "repo": "git@github.com:steve4650/davisgroup.uk.git",
+          "dest": "/home/deploy/git/davisgroup.uk",
+          "accept_hostkey": true
+        },
+        "become": "yes",
+        "become_user": "deploy"
+      },
+      {
+        "name": "Install uv for deploy user if missing",
+        "ansible.builtin.shell": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+        "args": {
+          "creates": "/home/deploy/.local/bin/uv"
+        },
+        "become": "yes",
+        "become_user": "deploy",
+        "environment": {
+          "HOME": "/home/deploy",
+          "USER": "deploy"
+        }
+      },
+      {
+        "name": "Install Bun for deploy user if missing",
+        "ansible.builtin.shell": "curl -fsSL https://bun.sh/install | bash",
+        "args": {
+          "creates": "/home/deploy/.local/bin/bun"
+        },
+        "become": "yes",
+        "become_user": "deploy",
+        "environment": {
+          "HOME": "/home/deploy",
+          "USER": "deploy"
+        }
+      },
+      {
+        "name": "Ensure Bun symlink exists for deploy user",
+        "ansible.builtin.file": {
+          "src": "/home/deploy/.bun/bin/bun",
+          "dest": "/home/deploy/.local/bin/bun",
+          "state": "link"
+        },
+        "become": "yes",
+        "become_user": "deploy"
+      },
+      {
+        "name": "Copy deploy.sh to /usr/local/bin/",
+        "ansible.builtin.copy": {
+          "src": "deploy.sh",
+          "dest": "/usr/local/bin/deploy.sh",
+          "mode": "0755",
+          "owner": "root",
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "bin_t",
+          "selevel": "s0"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create systemd service file for deploy",
+        "ansible.builtin.copy": {
+          "dest": "/etc/systemd/system/deploy.service",
+          "content": "[Unit]\nDescription=Deploy script\n\n[Service]\nType=oneshot\nExecStart=/usr/local/bin/deploy.sh\n",
+          "mode": "0644",
+          "owner": "root",
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "systemd_unit_file_t",
+          "selevel": "s0"
+        },
+        "become": "yes",
+        "register": "deploy_service_file"
+      },
+      {
+        "name": "Create systemd timer file for deploy",
+        "ansible.builtin.copy": {
+          "dest": "/etc/systemd/system/deploy.timer",
+          "content": "[Unit]\nDescription=Run deploy script every 10 minutes\nRequires=deploy.service\n\n[Timer]\nOnBootSec=10min\nOnUnitActiveSec=10min\n\n[Install]\nWantedBy=timers.target\n",
+          "mode": "0644",
+          "owner": "root",
+          "group": "root"
+        },
+        "become": "yes",
+        "register": "deploy_timer_file"
+      },
+      {
+        "name": "Enable and start deploy timer",
+        "ansible.builtin.systemd": {
+          "name": "deploy.timer",
+          "enabled": true,
+          "state": "started",
+          "daemon_reload": true
+        },
+        "become": "yes",
+        "when": "deploy_service_file.changed or deploy_timer_file.changed"
+      }
+    ]
+  }
+]
