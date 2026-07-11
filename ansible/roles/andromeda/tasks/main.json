@@ -71,7 +71,49 @@
         },
         "when": "andromeda_service.changed",
         "become": "yes"
+      },
+      {
+        "name": "Create /home/steve/.local directory",
+        "ansible.builtin.file": {
+          "path": "/home/steve/.local",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "steve",
+          "group": "steve"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /home/steve/.local/bin directory",
+        "ansible.builtin.file": {
+          "path": "/home/steve/.local/bin",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "steve",
+          "group": "steve"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Clone ischia repository",
+        "ansible.builtin.git": {
+          "repo": "https://github.com/steve4650/ischia.git",
+          "dest": "/home/steve/.local/bin/ischia",
+          "clone": true
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Install VPN update cron job for steve",
+        "ansible.builtin.cron": {
+          "name": "Update Cloudflare IPv4 DNS record",
+          "user": "steve",
+          "minute": "1,16,31,46",
+          "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv run ansible/roles/andromeda/files/vpn_update.py --ipv4-only"
+        },
+        "become": "yes"
       }
+
     ]
   }
 ]
