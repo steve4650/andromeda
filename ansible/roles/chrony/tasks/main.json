@@ -10,6 +10,10 @@
           "owner": "root",
           "group": "root",
           "mode": "0644",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "etc_t",
+          "selevel": "s0",
           "backup": true
         },
         "register": "chronyconf",
@@ -22,7 +26,8 @@
           "state": "stopped",
           "enabled": false
         },
-        "become": "yes"
+        "become": "yes",
+        "when": "ansible_facts['os_family'] == 'Alpine'"
       },
       {
         "name": "Enable chronyd service",
