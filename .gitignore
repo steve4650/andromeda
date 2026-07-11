@@ -1,4 +1,3 @@
-dist
 node_modules
 .ruby-lsp
 .venv
@@ -14,3 +13,7 @@ secrets.yaml
 vault.yml
 vault.yaml
 **/.env
+
+davisgroup.uk/dist
+ansible/roles/andromeda/files/andromeda.conf
+ansible/roles/andromeda/files/davisgroup.uk.*
