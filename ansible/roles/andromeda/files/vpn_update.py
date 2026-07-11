@@ -9,9 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Update Cloudflare A/AAAA DNS records using current public IPv4/IPv6 addresses."
-    )
+    parser = argparse.ArgumentParser(description="Update Cloudflare A/AAAA DNS records using current public IPv4/IPv6 addresses.")
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         "--ipv4-only",
@@ -57,15 +55,8 @@ def update_record(zone_id, record_id, record_type, ip, headers):
 def main():
     args = parse_args()
 
-    if (
-        not os.getenv("CLOUDFLARE_API_TOKEN")
-        or not os.getenv("ZONE_ID")
-        or ((not os.getenv("A_DNS_RECORD_ID")) and (not args.ipv6_only))
-        or ((not os.getenv("AAAA_DNS_RECORD_ID")) and (not args.ipv4_only))
-    ):
-        logging.error(
-            "Missing required environment variables: CLOUDFLARE_API_TOKEN, ZONE_ID, A_DNS_RECORD_ID, AAAA_DNS_RECORD_ID must all be defined."
-        )
+    if not os.getenv("CLOUDFLARE_API_TOKEN") or not os.getenv("ZONE_ID") or ((not os.getenv("A_DNS_RECORD_ID")) and (not args.ipv6_only)) or ((not os.getenv("AAAA_DNS_RECORD_ID")) and (not args.ipv4_only)):
+        logging.error("Missing required environment variables: CLOUDFLARE_API_TOKEN, ZONE_ID, A_DNS_RECORD_ID, AAAA_DNS_RECORD_ID must all be defined.")
         sys.exit(1)
 
     headers = {

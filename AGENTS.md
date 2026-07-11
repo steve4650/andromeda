@@ -7,4 +7,3 @@
 ./davisgroup.uk contains a webpage (https://davisgroup.uk) with a ton of sub-projects.
 
 `uv run make.py build` builds the whole webpage project. Test this works.
-

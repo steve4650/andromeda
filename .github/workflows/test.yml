@@ -20,9 +20,9 @@ jobs:
       - name: lint code and data
         run: |
           uv run make.py lint
-      - name: run frontend build			      
-        run: |						      
-          uv run make.py build			
+      - name: run frontend build
+        run: |
+          uv run make.py build
       - name: check for TODOs
         run: >
           git ls-files 

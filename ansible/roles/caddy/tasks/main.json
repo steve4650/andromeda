@@ -13,8 +13,9 @@
         },
         "register": "caddyfile_ischia",
         "become": "yes",
-            "when": "ansible_hostname in groups['ischia']"
-      },      {
+        "when": "ansible_hostname in groups['ischia']"
+      },
+      {
         "name": "install davisgroup.uk Caddyfile ",
         "ansible.builtin.template": {
           "src": "Caddyfile",
@@ -28,8 +29,7 @@
         },
         "register": "caddyfile",
         "become": "yes",
-            "when": "ansible_hostname in groups['davisgroup.uk']"
-
+        "when": "ansible_hostname in groups['davisgroup.uk']"
       },
 
       {

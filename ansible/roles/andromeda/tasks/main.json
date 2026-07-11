@@ -46,7 +46,8 @@
         "register": "andromeda_openrc_service",
         "become": "yes",
         "when": "ansible_facts['os_family'] == 'Alpine'"
-      },{
+      },
+      {
         "name": "Create andromeda systemd service",
         "ansible.builtin.copy": {
           "src": "andromeda.service",
@@ -74,7 +75,7 @@
         "when": "andromeda_systemd_service.changed or andromeda_openrc_service.changed",
         "become": "yes"
       },
-      
+
       {
         "name": "Clone ischia repository",
         "ansible.builtin.git": {

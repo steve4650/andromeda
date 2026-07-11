@@ -77,9 +77,7 @@ def lint_ansible_role_dirs() -> None:
                 elif isinstance(role, str):
                     expected_roles.add(role)
 
-    actual_roles = {
-        entry.name for entry in (ROOT / "ansible" / "roles").iterdir() if entry.is_dir()
-    }
+    actual_roles = {entry.name for entry in (ROOT / "ansible" / "roles").iterdir() if entry.is_dir()}
 
     missing = expected_roles - actual_roles
     extra = actual_roles - expected_roles
@@ -108,9 +106,7 @@ def lint_ansible() -> None:
 
     if missing:
         for path, location, backup_value in missing:
-            print(
-                f"{path}:{location}: ansible.builtin.copy must set backup: true (found {backup_value!r})"
-            )
+            print(f"{path}:{location}: ansible.builtin.copy must set backup: true (found {backup_value!r})")
         raise SystemExit(1)
 
     lint_ansible_role_dirs()
