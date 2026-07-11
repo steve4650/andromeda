@@ -20,7 +20,7 @@
       {
         "name": "Install WireGuard interface configuration",
         "ansible.builtin.template": {
-          "src": "andromeda_conf",
+          "content": "andromeda_conf",
           "dest": "/etc/wireguard/andromeda.conf",
           "owner": "root",
           "group": "root",
