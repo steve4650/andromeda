@@ -3,17 +3,35 @@
     "tags": "caddy",
     "block": [
       {
-        "name": "Render Caddyfile from template",
+        "name": "install ischia Caddyfile",
         "ansible.builtin.copy": {
           "src": "Caddyfile",
-          "dest": "/etc/caddy/Caddyfile",
+          "dest": "/etc/caddy/Caddyfile_ischia",
           "owner": "root",
           "group": "root",
           "backup": true
         },
+        "register": "caddyfile_ischia",
+        "become": "yes",
+            "when": "ansible_hostname in groups['ischia']"
+      },      {
+        "name": "install davisgroup.uk Caddyfile ",
+        "ansible.builtin.template": {
+          "src": "Caddyfile",
+          "dest": "/etc/caddy/Caddyfile_davisgroup_uk",
+          "owner": "root",
+          "group": "root",
+          "seuser": "system_u",
+          "serole": "object_r",
+          "setype": "etc_t",
+          "selevel": "s0"
+        },
         "register": "caddyfile",
-        "become": "yes"
+        "become": "yes",
+            "when": "ansible_hostname in groups['davisgroup.uk']"
+
       },
+
       {
         "name": "Enable caddy service",
         "ansible.builtin.service": {
@@ -21,7 +39,7 @@
           "state": "restarted",
           "enabled": true
         },
-        "when": "caddyfile.changed",
+        "when": "caddyfile_ischia.changed",
         "become": "yes"
       }
     ]
