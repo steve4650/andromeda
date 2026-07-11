@@ -5,16 +5,16 @@
     "strategy": "free",
     "vars_files": ["../vars/secrets.yml"],
     "roles": [
-      { "name": "apk" },
       { "name": "users" },
+      { "name": "apk" },
+      { "name": "dnf" },
+      { "name": "doas" },
       { "name": "sshd" },
       { "name": "chrony" },
-      { "name": "dnf" },
       { "name": "andromeda" },
       { "name": "caddy" },
       { "name": "gnuplex_display" },
-      { "name": "deploy_website" },
-      { "name": "doas" }
+      { "name": "deploy_website" }
     ]
   }
 ]
