@@ -49,7 +49,8 @@
           "mode": "0644",
           "backup": true
         },
-        "become": "yes"
+        "become": "yes",
+        "when": "ansible_hostname in groups['ischia_group']"
       },
       {
         "name": "Create /home/steve/.local directory",
