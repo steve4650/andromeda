@@ -125,10 +125,10 @@
         "become": "yes"
       },
       {
-        "name": "Clone davisgroup.uk repository for deploy",
+        "name": "Clone ischia repository for deploy",
         "ansible.builtin.git": {
-          "repo": "git@github.com:steve4650/davisgroup.uk.git",
-          "dest": "/home/deploy/git/davisgroup.uk",
+          "repo": "git@github.com:steve4650/ischia.git",
+          "dest": "/home/deploy/git/ischia",
           "accept_hostkey": true
         },
         "become": "yes",
