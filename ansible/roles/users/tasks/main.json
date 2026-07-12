@@ -26,7 +26,8 @@
         },
         "become": "yes",
         "when": "ansible_facts['hostname'] in groups['ischia_group']"
-      },{
+      },
+      {
         "name": "Create git user",
         "ansible.builtin.user": {
           "name": "git",
