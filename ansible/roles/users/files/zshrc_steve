@@ -14,9 +14,8 @@ function command_not_found_handler {
 }
 
 # env vars
-export DENO_INSTALL="$HOME/.deno"
 export EDITOR="/usr/bin/vi"
-export PATH="$HOME/.local/bin:$HOME/.go/bin:$HOME/go/bin:$HOME/.cargo/bin/:$HOME/.deno/bin:$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export LESSHISTFILE="/dev/null"
 export HISTFILE=~/.zshhistfile
 export DISABLE_AUTO_TITLE="true"
@@ -52,10 +51,6 @@ alias sqlite='sqlite3 -header -column'
 alias df='df -hT'
 alias ip='ip -c'
 alias gitroot='cd "$(git rev-parse --show-toplevel)"'
-alias coinflip='shuf -r -n 1 -e heads tails'
-alias coin='shuf -r -n 1 -e heads tails'
-alias rake='bundle exec rake'
-alias rails='bundle exec rails'
 
 # directory shortcuts
 hash -d down=~/Downloads
@@ -66,15 +61,11 @@ hash -d books=~/Documents/books
 hash -d pic=~/Pictures
 hash -d pics=~/Pictures
 hash -d git=~/git
-hash -d mutiny=~/gitlab/mutiny
 hash -d ext=/mnt/externalssd
+hash -d ext2=/mnt/externalssd2
 
 function sorti {
   ex -s +'%!sort' -cxa "$1"
-}
-
-function shellfix {
-  shellcheck --format diff --shell bash "$1" | patch -p1 "$1"
 }
 
 function gitstatus {
@@ -98,5 +89,5 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "/home/steve/.bun/_bun" ] && source "/home/steve/.bun/_bun"
 
-alias sudo=doas
+which doas &>/dev/null || alias sudo=doas
 

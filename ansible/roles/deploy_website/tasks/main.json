@@ -3,21 +3,6 @@
     "tags": "static_Files",
     "block": [
       {
-        "name": "Load secret variables",
-        "ansible.builtin.include_vars": {
-          "file": "{{ playbook_dir }}/../../.secrets.json"
-        },
-        "become": "yes"
-      },
-      {
-        "name": "Decode deploy SSH keys",
-        "ansible.builtin.set_fact": {
-          "deploy_ssh_private_key": "{{ lookup('ansible.builtin.vars', 'id_deploy') | from_json }}",
-          "deploy_ssh_public_key": "{{ lookup('ansible.builtin.vars', 'id_deploy.pub') | from_json }}"
-        },
-        "become": "yes"
-      },
-      {
         "name": "Create /var/www/html/",
         "ansible.builtin.file": {
           "path": "/var/www/html",
