@@ -16,12 +16,17 @@ import pathlib
 import subprocess
 import sys
 
+import structlog
+
+log = structlog.get_logger()
+
+
 ROOT = pathlib.Path(__file__).resolve().parent
 
 
 def sh(*args, env=None, check=True):
     command = [str(arg) for arg in args]
-    print("+", " ".join(command))
+    log.info("sh: " + " ".join(command))
     env_vars = os.environ.copy()
     if env:
         env_vars.update(env)
@@ -30,11 +35,12 @@ def sh(*args, env=None, check=True):
 
 def hydrate_secrets() -> None:
     """copy secrets from a local repo into this repo"""
+    log.info("hydrating secrets...")
     secret_files_path = ROOT / "secret-files.json"
     secret_files_source_path = ROOT / "secret-files-source.json"
 
     if (not secret_files_path.exists()) or (not secret_files_source_path.exists()):
-        print("Secret hydration files do not exist...")
+        log.error("Secret hydration files do not exist...")
         raise SystemExit(1)
 
     with open(secret_files_path, encoding="utf-8") as f:
@@ -47,7 +53,7 @@ def hydrate_secrets() -> None:
         source_path = source_dir / secret
         dest_path = ROOT / secret
         if not source_path.exists():
-            print(f"Secret file {source_path} does not exist; skipping.")
+            log.error(f"Secret file {source_path} does not exist; skipping.")
             continue
         dest_path.parent.mkdir(parents=True, exist_ok=True)
         sh("cp", "-v", str(source_path), str(dest_path))
@@ -55,6 +61,7 @@ def hydrate_secrets() -> None:
 
 def deploy_test() -> None:
     """run ansible playbook in check mode to test deployment"""
+    log.info("hydrating secrets...")
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
     hydrate_secrets()
     sh(
@@ -110,19 +117,19 @@ def lint_ansible_role_dirs() -> None:
     extra = actual_roles - expected_roles
     if missing or extra:
         if missing:
-            print("ERROR: missing ansible role dirs for deploy.json roles:")
+            log.error("ERROR: missing ansible role dirs for deploy.json roles:")
             for role in sorted(missing):
-                print(f"  - {role}")
+                log.error(f"  - {role}")
         if extra:
-            print("ERROR: some ansible role dirs not listed in deploy.json:")
+            log.error("ERROR: some ansible role dirs not listed in deploy.json:")
             for role in sorted(extra):
-                print(f"  - {role}")
+                log.error(f"  - {role}")
         raise SystemExit(1)
 
 
 def lint_ansible() -> None:
     """lint Ansible JSON tasks for required ansible.builtin.copy options."""
-    print("+ linting Ansible tasks...")
+    log.info("linting Ansible tasks...")
     missing = []
     for path in sorted(ROOT.glob("ansible/roles/**/tasks/*.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -133,7 +140,7 @@ def lint_ansible() -> None:
 
     if missing:
         for path, location, backup_value in missing:
-            print(f"{path}:{location}: ansible.builtin.copy must set backup: true (found {backup_value!r})")
+            log.error(f"{path}:{location}: ansible.builtin.copy must set backup: true (found {backup_value!r})")
         raise SystemExit(1)
 
     lint_ansible_role_dirs()
@@ -144,6 +151,7 @@ tasks = {}
 
 def build_npm() -> None:
     """build node web projects maintained in this repo into dist/"""
+    log.info("building npm projects...")
     for project in ["share-location", "chikorita", "freebee"]:
         destination = ROOT / "davisgroup.uk" / "dist" / project
         destination.mkdir(parents=True, exist_ok=True)
@@ -161,9 +169,10 @@ def build_npm() -> None:
 
 def compress() -> None:
     """creates .gz and .zst sidecar files for content in dist/, but only if the compressed file is smaller than the original"""
+    log.info("compressing dist/ files...")
     dist_root = ROOT / "davisgroup.uk" / "dist"
     if not dist_root.exists():
-        print("No dist directory found; nothing to compress.")
+        log.error("No dist directory found; nothing to compress.")
         return
 
     for path in dist_root.rglob("*"):
@@ -183,16 +192,19 @@ def compress() -> None:
 
 def build_static() -> None:
     """compile Markdown writeupes in writeups/"""
+    log.info("compiling Markdown writeups...")
     sh("bash", str(ROOT / "davisgroup.uk" / "writeups" / "compile"))
 
 
 def build_liturgical() -> None:
     """builds the liturgical calendar maintained in litigurical_calendar"""
+    log.info("building liturgical calendar...")
     sh("uv", "run", "davisgroup.uk/liturgical_calendar/generate_ical.py")
 
 
 def lint_csv() -> None:
     """makes sure the liturgical_calendar/liturgy.csv file is valid CSV"""
+    log.info("linting liturgical_calendar/liturgy.csv...")
     csv_file = ROOT / "davisgroup.uk" / "liturgical_calendar" / "liturgy.csv"
     try:
         with open(csv_file, newline="", encoding="utf-8") as f:
@@ -202,24 +214,23 @@ def lint_csv() -> None:
                 if expected_cols is None:
                     expected_cols = len(row)
                 elif len(row) != expected_cols:
-                    print(
-                        f"✗ {csv_file} is invalid CSV: row {row_num} has {len(row)} columns, expected {expected_cols}",
-                        file=sys.stderr,
-                    )
+                    log.error(f"✗ {csv_file} is invalid CSV: row {row_num} has {len(row)} columns, expected {expected_cols}")
                     sys.exit(1)
-        print(f"✓ {csv_file} is valid CSV")
+        log.info(f"✓ {csv_file} is valid CSV")
     except csv.Error as e:
-        print(f"✗ {csv_file} is invalid CSV: {e}", file=sys.stderr)
+        log.error(f"✗ {csv_file} is invalid CSV: {e}", file=sys.stderr)
         sys.exit(1)
 
 
 def cp_static() -> None:
     """copies static web files into dist/"""
+    log.info("copying static web files into dist/...")
     sh("rsync", "-rv", str(ROOT / "davisgroup.uk" / "static") + "/", str(ROOT / "davisgroup.uk" / "dist") + "/")
 
 
 def commit_hash() -> None:
     """copies current commit hashinto dist/"""
+    log.info("copying commit hash into dist/...")
     # write output of `git rev-parse HEAD` to dist/commit
     commit_file = ROOT / "davisgroup.uk" / "dist" / "commit"
     with open(commit_file, "w", encoding="utf-8") as f:
@@ -239,11 +250,13 @@ def build() -> None:
 def dev() -> None:
     """build, then run a local web server to serve the dist/ directory for development"""
     build()
+    log.info("starting dev server...")
     sh("python3", "-m", "http.server", "-d", str(ROOT / "davisgroup.uk" / "dist"), "50000")
 
 
 def fmt() -> None:
     """format and lint this repo"""
+    log.info("formatting / fixing this repo...")
     sh("uv", "run", "ruff", "format")
     sh("uv", "run", "ruff", "check", "--fix", "--unsafe-fixes")
     sh("bun", "i")
@@ -253,6 +266,7 @@ def fmt() -> None:
 
 def lint() -> None:
     """lint this repo, including checking formatting"""
+    log.info("linting this repo...")
     sh("uv", "run", "ruff", "format", "--check")
     sh("uv", "run", "ruff", "check")
     sh("bun", "i")
@@ -284,7 +298,6 @@ def print_help() -> None:
     print("Available tasks:")
     for name in sorted(tasks):
         print(f"  {name}")
-    print("\nDefault task: fmt")
 
 
 def main() -> int:
@@ -296,7 +309,7 @@ def main() -> int:
 
     task = tasks.get(task_name)
     if task is None:
-        print(f"Unknown task: {task_name}\n")
+        log.error(f"Unknown task: {task_name}\n")
         print_help()
         return 1
 
