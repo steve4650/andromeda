@@ -19,7 +19,7 @@
           "path": "/home/git/.ssh/authorized_keys",
           "state": "touch",
           "modification_time": "preserve",
-          "acceess_time": "preserve",
+          "access_time": "preserve",
           "mode": "0600",
           "owner": "git",
           "group": "git"
