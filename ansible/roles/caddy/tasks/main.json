@@ -5,8 +5,8 @@
       {
         "name": "install ischia Caddyfile",
         "ansible.builtin.copy": {
-          "src": "Caddyfile",
-          "dest": "/etc/caddy/Caddyfile_ischia",
+          "src": "Caddyfile_ischia",
+          "dest": "/etc/caddy/Caddyfile",
           "owner": "root",
           "group": "root",
           "backup": true
@@ -18,8 +18,8 @@
       {
         "name": "install davisgroup.uk Caddyfile ",
         "ansible.builtin.template": {
-          "src": "Caddyfile",
-          "dest": "/etc/caddy/Caddyfile_davisgroup_uk",
+          "src": "Caddyfile_davisgroup_uk",
+          "dest": "/etc/caddy/Caddyfile",
           "owner": "root",
           "group": "root",
           "seuser": "system_u",

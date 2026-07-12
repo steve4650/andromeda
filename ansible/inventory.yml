@@ -1,0 +1,9 @@
+all:
+  children:
+    ischia_group:
+      hosts:
+        ischia:
+          ansible_become_method: doas
+    davisgroup_uk_group:
+      hosts:
+        davisgroup.uk:

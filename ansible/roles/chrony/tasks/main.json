@@ -3,10 +3,10 @@
     "tags": "chrony",
     "block": [
       {
-        "name": "Copy chrony.conf into place",
+        "name": "Copy chrony.conf into place (davisgroup.uk)",
         "ansible.builtin.copy": {
           "src": "chrony.conf",
-          "dest": "/etc/chrony/chrony.conf",
+          "dest": "/etc/chrony.conf",
           "owner": "root",
           "group": "root",
           "mode": "0644",
@@ -17,8 +17,24 @@
           "backup": true
         },
         "register": "chronyconf",
-        "become": "yes"
+        "become": "yes",
+        "when": "ansible_hostname in groups['davisgroup_uk_group']"
       },
+      {
+        "name": "Copy chrony.conf into place (ischia)",
+        "ansible.builtin.copy": {
+          "src": "chrony.conf",
+          "dest": "/etc/chrony/chrony.conf",
+          "owner": "root",
+          "group": "root",
+          "mode": "0644",
+          "backup": true
+        },
+        "register": "chronyconf",
+        "become": "yes",
+        "when": "ansible_hostname in groups['ischia_group']"
+      },
+
       {
         "name": "Disable ntpd service",
         "ansible.builtin.service": {
