@@ -1,0 +1,142 @@
+* {
+  color: black;
+  font: 1em sans-serif;
+}
+
+.colflex {
+  display: flex;
+  flex-direction: column;
+}
+.colflex:nth-child(2) {
+  flex: 2;
+}
+.colflex:nth-child(2) {
+  flex: 3;
+}
+.rowflex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.rowflex > * {
+  flex: 1;
+}
+/* 
+ * layout adjustments
+ */
+#root {
+  margin: 3%;
+}
+.liturgical-cal-root {
+  max-width: 800px;
+}
+#mainbody {
+  margin-top: 2%;
+}
+#picdiv {
+  max-width: 80%;
+  min-width: 400px;
+  margin-bottom: 5%;
+}
+#linkdiv {
+  min-width: 400px;
+  margin-bottom: 5%;
+}
+.projlink {
+  margin-top: 3%;
+}
+.projlink.first {
+  margin-top: 0;
+  margin-bottom: 1%;
+  font-weight: bold;
+}
+.projlink.second {
+  margin-top: 4%;
+  margin-bottom: 1%;
+  font-weight: bold;
+}
+#slogan {
+  margin-bottom: 3%;
+}
+/* 
+ * style
+ */
+h1 {
+  font: 1.5em sans-serif;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+.title {
+  font: 2em sans-serif;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+.subtitle {
+  font: 1em sans-serif;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+#toc-title {
+  font: 1.5em sans-serif;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+code,
+.sourceCode,
+.sourceCode > *,
+.sourceCode > * > * {
+  font: 1em monospace;
+}
+
+#picdiv > * {
+  margin-bottom: 4%;
+}
+
+ol,
+ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+  padding: 0;
+}
+
+ul {
+  list-style: disc inside;
+}
+
+.copy-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.copy-link-row code {
+  display: inline-block;
+  background: #f5f5f5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+#copy-button {
+  border: 1px solid #888;
+  background: #fff;
+  color: #000;
+  padding: 0.15rem 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font: inherit;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+#copy-button:hover,
+#copy-button:focus {
+  background: #f0f0f0;
+  border-color: #666;
+}
+
+#copy-button:focus {
+  outline: 3px solid rgba(0, 102, 204, 0.25);
+}

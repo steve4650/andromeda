@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Liturgical Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon-32x32.png" />
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+
+  <body>
+    <div id="root" class="liturgical-cal-root colflex">
+      <span class="title">Liturgical Calendar</span>
+      <p>
+        This is an online Roman Catholic liturgical calendar based on
+        <a href="https://www.usccb.org/committees/divine-worship/liturgical-calendar"
+          >the official USCCB calendar</a
+        >. Subscribe using the iPhone Calendar app, Google Calendar, et cetera!
+      </p>
+      <p class="subtitle">Instructions:</p>
+      <ol>
+        <li>
+          Copy this link:
+          <div class="copy-link-row">
+            <code id="calendar-url">https://davisgroup.uk/liturgy.ics</code>
+            <button id="copy-button" type="button">Copy link</button>
+          </div>
+        </li>
+        <li>
+          Subscribe using one of these instructions:
+          <ul>
+            <li><a href="https://support.apple.com/en-us/102301">iPhone Calendar</a></li>
+            <li><a href="https://support.google.com/calendar/answer/37100">Google Calendar</a></li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    <script>
+      const copyButton = document.getElementById("copy-button");
+      const calendarUrl = document.getElementById("calendar-url");
+
+      if (copyButton && calendarUrl) {
+        copyButton.addEventListener("click", async () => {
+          const url = calendarUrl.textContent.trim();
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(url);
+            } else {
+              const tempInput = document.createElement("textarea");
+              tempInput.value = url;
+              tempInput.setAttribute("readonly", "");
+              tempInput.style.position = "absolute";
+              tempInput.style.left = "-9999px";
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              document.execCommand("copy");
+              document.body.removeChild(tempInput);
+            }
+            copyButton.textContent = "Copied!";
+            setTimeout(() => {
+              copyButton.textContent = "Copy link";
+            }, 1600);
+          } catch (err) {
+            copyButton.textContent = "Copy failed";
+            console.error(err);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+[
+  {
+    "tags": "dnf",
+    "block": [
+      {
+        "name": "Install DNF packages",
+        "ansible.builtin.package": {
+          "name": ["chrony", "caddy", "wireguard-tools"],
+          "state": "present"
+        },
+        "become": "yes",
+        "when": "ansible_facts['os_family']|lower == 'redhat'"
+      }
+    ]
+  }
+]

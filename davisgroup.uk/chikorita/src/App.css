@@ -1,0 +1,41 @@
+.app {
+  display: flex;
+  flex-direction: row;
+  width: 99%;
+  height: 100%;
+}
+
+.panel-webview {
+  flex: 1;
+}
+
+.panel-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.panel-input-htmlinput,
+.panel-input-cssinput {
+  flex: 1;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
+}
+
+.webview {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  border: 1px solid black;
+}

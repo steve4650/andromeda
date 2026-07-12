@@ -1,18 +1,32 @@
 [
   {
-    "name": "ischia deployment",
-    "hosts": "targets",
+    "name": "andromeda server deployments",
+    "hosts": "all",
     "strategy": "free",
     "vars_files": ["../vars/secrets.yml"],
     "roles": [
-      { "name": "apk" },
       { "name": "users" },
+      { "name": "apk" },
+      { "name": "dnf" },
+      { "name": "doas" },
       { "name": "sshd" },
       { "name": "chrony" },
       { "name": "andromeda" },
-      { "name": "caddy" },
-      { "name": "gnuplex_display" },
-      { "name": "doas" }
+      { "name": "caddy" }
     ]
+  },
+  {
+    "name": "ischia only tasks",
+    "hosts": "ischia_group",
+    "strategy": "free",
+    "vars_files": ["../vars/secrets.yml"],
+    "roles": [{ "name": "gnuplex_display" }]
+  },
+  {
+    "name": "davisgroup.uk only tasks",
+    "hosts": "davisgroup_uk_group",
+    "strategy": "free",
+    "vars_files": ["../vars/secrets.yml"],
+    "roles": [{ "name": "deploy_website" }]
   }
 ]

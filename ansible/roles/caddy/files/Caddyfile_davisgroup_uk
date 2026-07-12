@@ -1,0 +1,48 @@
+{
+  admin off
+}
+
+janie.page {
+  redir https://davisgroup.uk{uri} permanent
+}
+
+davisgroup.uk {
+  root * /var/www/html
+  file_server {
+    precompressed gzip zstd
+  }
+}
+
+secret.davisgroup.uk {
+  root * /var/www/secret
+  basicauth {
+    secret {{ secret_davisgroup_uk_pass }}
+  }
+  file_server browse
+  file_server {
+    precompressed gzip zstd
+  }
+}
+
+ip.davisgroup.uk {
+  templates
+  header Content-Type text/plain
+  respond "{% raw %}{{.RemoteIP}}{% endraw %}"
+}
+
+ip4.davisgroup.uk {
+  templates
+  header Content-Type text/plain
+  respond "{% raw %}{{.RemoteIP}}{% endraw %}"
+}
+
+ip6.davisgroup.uk {
+  templates
+  header Content-Type text/plain
+  respond "{% raw %}{{.RemoteIP}}{% endraw %}"
+}
+
+gnuplex.davisgroup.uk {
+  redir / https://github.com/steve4650/gnuplex
+  redir /install.sh https://raw.githubusercontent.com/steve4650/gnuplex/refs/heads/main/install_files/install.sh
+}

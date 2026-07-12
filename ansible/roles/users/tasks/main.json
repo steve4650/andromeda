@@ -12,11 +12,20 @@
         "become": "yes"
       },
       {
-        "name": "Create gnuplex",
+        "name": "Create deploy user",
+        "ansible.builtin.user": {
+          "name": "deploy"
+        },
+        "become": "yes",
+        "when": "ansible_hostname in groups['davisgroup_uk_group']"
+      },
+      {
+        "name": "Create gnuplex user",
         "ansible.builtin.user": {
           "name": "gnuplex"
         },
-        "become": "yes"
+        "become": "yes",
+        "when": "ansible_hostname in groups['ischia_group']"
       },
       {
         "name": "install steve zshrc",
@@ -39,6 +48,29 @@
           "group": "gnuplex",
           "mode": "0644",
           "backup": true
+        },
+        "become": "yes",
+        "when": "ansible_hostname in groups['ischia_group']"
+      },
+      {
+        "name": "Create /home/steve/.local directory",
+        "ansible.builtin.file": {
+          "path": "/home/steve/.local",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "steve",
+          "group": "steve"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /home/steve/.local/bin directory",
+        "ansible.builtin.file": {
+          "path": "/home/steve/.local/bin",
+          "state": "directory",
+          "mode": "0755",
+          "owner": "steve",
+          "group": "steve"
         },
         "become": "yes"
       }
