@@ -91,7 +91,7 @@
         "name": "Install deploy SSH private key",
         "ansible.builtin.copy": {
           "dest": "/home/deploy/.ssh/id_deploy",
-          "content": "{{ deploy_ssh_private_key }}",
+          "content": "{{ id_deploy }}",
           "mode": "0600",
           "owner": "deploy",
           "group": "deploy",
@@ -104,7 +104,7 @@
         "name": "Install deploy SSH public key",
         "ansible.builtin.copy": {
           "dest": "/home/deploy/.ssh/id_deploy.pub",
-          "content": "{{ deploy_ssh_public_key }}",
+          "content": "{{ id_deploy_pub }}",
           "mode": "0644",
           "owner": "deploy",
           "group": "deploy",
