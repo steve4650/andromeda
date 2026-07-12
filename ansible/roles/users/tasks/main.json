@@ -17,7 +17,7 @@
           "name": "deploy"
         },
         "become": "yes",
-        "when": "ansible_hostname in groups['davisgroup_uk_group']"
+        "when": "ansible_facts['hostname'] in groups['davisgroup_uk_group']"
       },
       {
         "name": "Create gnuplex user",
@@ -25,7 +25,7 @@
           "name": "gnuplex"
         },
         "become": "yes",
-        "when": "ansible_hostname in groups['ischia_group']"
+        "when": "ansible_facts['hostname'] in groups['ischia_group']"
       },
       {
         "name": "install steve zshrc",
@@ -50,7 +50,7 @@
           "backup": true
         },
         "become": "yes",
-        "when": "ansible_hostname in groups['ischia_group']"
+        "when": "ansible_facts['hostname'] in groups['ischia_group']"
       },
       {
         "name": "Create /home/steve/.local directory",
