@@ -118,7 +118,7 @@ tasks = {}
 def build_npm() -> None:
     """build node web projects maintained in this repo into dist/"""
     for project in ["share-location", "chikorita", "freebee"]:
-        destination = ROOT / "dist" / project
+        destination = ROOT / "davisgroup.uk" / "dist" / project
         destination.mkdir(parents=True, exist_ok=True)
         sh("bun", "i", "--cwd", str(ROOT / project))
         sh("bun", "run", "--cwd", str(ROOT / project), "build")
@@ -127,14 +127,14 @@ def build_npm() -> None:
         "rsync",
         "-rv",
         "--delete",
-        str(ROOT / "freebee" / "api") + "/",
-        str(ROOT / "dist" / "freebee" / "api") + "/",
+        str(ROOT / "davisgroup.uk" / "freebee" / "api") + "/",
+        str(ROOT / "davisgroup.uk" / "dist" / "freebee" / "api") + "/",
     )
 
 
 def compress() -> None:
     """creates .gz and .zst sidecar files for content in dist/, but only if the compressed file is smaller than the original"""
-    dist_root = ROOT / "dist"
+    dist_root = ROOT / "davisgroup.uk" / "dist"
     if not dist_root.exists():
         print("No dist directory found; nothing to compress.")
         return
@@ -156,17 +156,17 @@ def compress() -> None:
 
 def build_static() -> None:
     """compile Markdown writeupes in writeups/"""
-    sh("bash", str(ROOT / "writeups" / "compile"))
+    sh("bash", str(ROOT / "davisgroup.uk" / "writeups" / "compile"))
 
 
 def build_liturgical() -> None:
     """builds the liturgical calendar maintained in litigurical_calendar"""
-    sh("uv", "run", "liturgical_calendar/generate_ical.py")
+    sh("uv", "run", "davisgroup.uk/liturgical_calendar/generate_ical.py")
 
 
 def lint_csv() -> None:
     """makes sure the liturgical_calendar/liturgy.csv file is valid CSV"""
-    csv_file = ROOT / "liturgical_calendar" / "liturgy.csv"
+    csv_file = ROOT / "davisgroup.uk" / "liturgical_calendar" / "liturgy.csv"
     try:
         with open(csv_file, newline="", encoding="utf-8") as f:
             reader = csv.reader(f, strict=True)
@@ -188,13 +188,13 @@ def lint_csv() -> None:
 
 def cp_static() -> None:
     """copies static web files into dist/"""
-    sh("rsync", "-rv", str(ROOT / "static") + "/", str(ROOT / "dist") + "/")
+    sh("rsync", "-rv", str(ROOT / "davisgroup.uk" / "static") + "/", str(ROOT / "davisgroup.uk" / "dist") + "/")
 
 
 def commit_hash() -> None:
     """copies current commit hashinto dist/"""
     # write output of `git rev-parse HEAD` to dist/commit
-    commit_file = ROOT / "dist" / "commit"
+    commit_file = ROOT / "davisgroup.uk" / "dist" / "commit"
     with open(commit_file, "w", encoding="utf-8") as f:
         subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, stdout=f, check=True)
 
@@ -212,7 +212,7 @@ def build() -> None:
 def dev() -> None:
     """build, then run a local web server to serve the dist/ directory for development"""
     build()
-    sh("python3", "-m", "http.server", "-d", str(ROOT / "dist"), "50000")
+    sh("python3", "-m", "http.server", "-d", str(ROOT / "davisgroup.uk" / "dist"), "50000")
 
 
 def fmt() -> None:
