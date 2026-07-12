@@ -125,10 +125,10 @@
         "become": "yes"
       },
       {
-        "name": "Clone ischia repository for deploy",
+        "name": "Clone andromeda repository for deploy",
         "ansible.builtin.git": {
-          "repo": "git@github.com:steve4650/ischia.git",
-          "dest": "/home/deploy/git/ischia",
+          "repo": "git@github.com:steve4650/andromeda.git",
+          "dest": "/home/deploy/git/andromeda",
           "accept_hostkey": true
         },
         "become": "yes",
