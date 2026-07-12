@@ -1,0 +1,31 @@
+[
+  {
+    "tags": "git",
+    "block": [
+      {
+        "name": "Create /home/git/.ssh directory",
+        "ansible.builtin.file": {
+          "path": "/home/git/.ssh",
+          "state": "directory",
+          "mode": "0700",
+          "owner": "git",
+          "group": "git"
+        },
+        "become": "yes"
+      },
+      {
+        "name": "Create /home/git/.ssh/authorized_keys",
+        "ansible.builtin.file": {
+          "path": "/home/git/.ssh/authorized_keys",
+          "state": "touch",
+          "modification_time": "preserve",
+          "acceess_time": "preserve",
+          "mode": "0600",
+          "owner": "git",
+          "group": "git"
+        },
+        "become": "yes"
+      }
+    ]
+  }
+]
