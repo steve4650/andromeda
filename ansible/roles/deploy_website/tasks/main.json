@@ -80,7 +80,8 @@
           "src": "ssh_config",
           "mode": "0644",
           "owner": "deploy",
-          "group": "deploy"
+          "group": "deploy",
+          "backup": true
         },
         "become": "yes",
         "become_user": "deploy"
@@ -93,7 +94,8 @@
           "content": "{{ deploy_ssh_private_key }}",
           "mode": "0600",
           "owner": "deploy",
-          "group": "deploy"
+          "group": "deploy",
+          "backup": true
         },
         "become": "yes",
         "become_user": "deploy"
@@ -105,7 +107,8 @@
           "content": "{{ deploy_ssh_public_key }}",
           "mode": "0644",
           "owner": "deploy",
-          "group": "deploy"
+          "group": "deploy",
+          "backup": true
         },
         "become": "yes",
         "become_user": "deploy"
@@ -178,7 +181,8 @@
           "seuser": "system_u",
           "serole": "object_r",
           "setype": "bin_t",
-          "selevel": "s0"
+          "selevel": "s0",
+          "backup": true
         },
         "become": "yes"
       },
@@ -193,7 +197,8 @@
           "seuser": "system_u",
           "serole": "object_r",
           "setype": "systemd_unit_file_t",
-          "selevel": "s0"
+          "selevel": "s0",
+          "backup": true
         },
         "become": "yes",
         "register": "deploy_service_file"
@@ -205,7 +210,8 @@
           "content": "[Unit]\nDescription=Run deploy script every 10 minutes\nRequires=deploy.service\n\n[Timer]\nOnBootSec=10min\nOnUnitActiveSec=10min\n\n[Install]\nWantedBy=timers.target\n",
           "mode": "0644",
           "owner": "root",
-          "group": "root"
+          "group": "root",
+          "backup": true
         },
         "become": "yes",
         "register": "deploy_timer_file"

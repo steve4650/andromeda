@@ -58,7 +58,8 @@
           "seuser": "system_u",
           "serole": "object_r",
           "setype": "systemd_unit_file_t",
-          "selevel": "s0"
+          "selevel": "s0",
+          "backup": true
         },
         "register": "andromeda_systemd_service",
         "become": "yes",
