@@ -120,8 +120,8 @@ def build_npm() -> None:
     for project in ["share-location", "chikorita", "freebee"]:
         destination = ROOT / "davisgroup.uk" / "dist" / project
         destination.mkdir(parents=True, exist_ok=True)
-        sh("bun", "i", "--cwd", str(ROOT / project))
-        sh("bun", "run", "--cwd", str(ROOT / project), "build")
+        sh("bun", "i", "--cwd", str(ROOT / "davisgroup.uk" / project))
+        sh("bun", "run", "--cwd", str(ROOT / "davisgroup.uk" / project), "build")
 
     sh(
         "rsync",
