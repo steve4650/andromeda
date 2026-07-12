@@ -26,7 +26,16 @@
         },
         "become": "yes",
         "when": "ansible_facts['hostname'] in groups['ischia_group']"
+      },{
+        "name": "Create git user",
+        "ansible.builtin.user": {
+          "name": "git",
+          "shell": "/usr/bin/git-shell"
+        },
+        "become": "yes",
+        "when": "ansible_facts['hostname'] in groups['ischia_group']"
       },
+
       {
         "name": "install steve zshrc",
         "ansible.builtin.copy": {
