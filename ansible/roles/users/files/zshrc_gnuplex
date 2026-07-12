@@ -89,6 +89,6 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "/home/steve/.bun/_bun" ] && source "/home/steve/.bun/_bun"
 
-which doas &>/dev/null || alias sudo=doas
+which doas &>/dev/null && alias sudo=doas
 
 pgrep sway &>/dev/null || sway-run
