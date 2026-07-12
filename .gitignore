@@ -4,8 +4,6 @@ node_modules
 __pycache__
 **/.vite
 .ruff_cache
-.secrets.json
-secrets.json
 .secrets.yml
 secrets.yml
 .secrets.yaml
@@ -15,5 +13,4 @@ vault.yaml
 **/.env
 
 davisgroup.uk/dist
-ansible/roles/andromeda/files/andromeda.conf
-ansible/roles/andromeda/files/davisgroup.uk.*
+secret-files-source.json

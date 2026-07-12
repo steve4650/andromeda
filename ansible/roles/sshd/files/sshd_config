@@ -11,7 +11,7 @@ GSSAPIAuthentication yes
 GSSAPICleanupCredentials no
 X11Forwarding no
 PrintMotd no
-AllowUsers steve gnuplex
+AllowUsers steve gnuplex git
 Subsystem	sftp	internal-sftp
 
 Include /etc/ssh/sshd_config.d/*.conf
