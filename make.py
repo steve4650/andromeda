@@ -28,9 +28,35 @@ def sh(*args, env=None, check=True):
     subprocess.run(command, cwd=ROOT, env=env_vars, check=check)
 
 
+def hydrate_secrets() -> None:
+    """copy secrets from a local repo into this repo"""
+    secret_files_path = ROOT / "secret-files.json"
+    secret_files_source_path = ROOT / "secret-files-source.json"
+
+    if (not secret_files_path.exists()) or (not secret_files_source_path.exists()):
+        print("Secret hydration files do not exist...")
+        raise SystemExit(1)
+
+    with open(secret_files_path, encoding="utf-8") as f:
+        secret_files = json.load(f)
+    with open(secret_files_source_path, encoding="utf-8") as f:
+        secret_files_source = json.load(f)
+
+    source_dir = pathlib.Path(secret_files_source["source"])
+    for secret in secret_files.get("secrets", []):
+        source_path = source_dir / secret
+        dest_path = ROOT / secret
+        if not source_path.exists():
+            print(f"Secret file {source_path} does not exist; skipping.")
+            continue
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        sh("cp", "-v", str(source_path), str(dest_path))
+
+
 def deploy_test() -> None:
     """run ansible playbook in check mode to test deployment"""
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
+    hydrate_secrets()
     sh(
         "ansible-playbook",
         "--ask-vault-pass",
@@ -45,6 +71,7 @@ def deploy_test() -> None:
 def deploy() -> None:
     """run ansible playbook to deploy to Production"""
     env = {"ANSIBLE_CONFIG": str(ROOT / "ansible" / "ansible.cfg")}
+    hydrate_secrets()
     sh(
         "ansible-playbook",
         "--ask-vault-pass",
