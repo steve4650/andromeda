@@ -1,11 +1,11 @@
 import argparse
-import logging
 import os
 import sys
 
 import requests
+import structlog
 
-logging.basicConfig(level=logging.INFO)
+log = structlog.get_logger()
 
 
 def parse_args():
@@ -27,10 +27,10 @@ def parse_args():
 def get_public_ip(url, address_family):
     response = requests.get(url)
     if response.status_code != 200:
-        logging.error("Failed to retrieve %s address", address_family)
+        log.error("Failed to retrieve %s address", address_family)
         sys.exit(1)
     ip = response.text.strip()
-    logging.info("Retrieved %s address: %s", address_family, ip)
+    log.info("Retrieved %s address: %s", address_family, ip)
     return ip
 
 
@@ -41,9 +41,9 @@ def update_record(zone_id, record_id, record_type, ip, headers):
         json={"type": record_type, "content": ip},
     )
     if response.ok:
-        logging.info("Successfully updated %s DNS record to %s", record_type, ip)
+        log.info("Successfully updated %s DNS record to %s", record_type, ip)
         return
-    logging.error(
+    log.error(
         "Failed to update %s DNS record: %s, status code: %s",
         record_type,
         response.text,
@@ -56,7 +56,7 @@ def main():
     args = parse_args()
 
     if not os.getenv("CLOUDFLARE_API_TOKEN") or not os.getenv("ZONE_ID") or ((not os.getenv("A_DNS_RECORD_ID")) and (not args.ipv6_only)) or ((not os.getenv("AAAA_DNS_RECORD_ID")) and (not args.ipv4_only)):
-        logging.error("Missing required environment variables: CLOUDFLARE_API_TOKEN, ZONE_ID, A_DNS_RECORD_ID, AAAA_DNS_RECORD_ID must all be defined.")
+        log.error("Missing required environment variables: CLOUDFLARE_API_TOKEN, ZONE_ID, A_DNS_RECORD_ID, AAAA_DNS_RECORD_ID must all be defined.")
         sys.exit(1)
 
     headers = {
