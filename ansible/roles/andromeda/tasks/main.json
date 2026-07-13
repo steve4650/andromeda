@@ -80,8 +80,8 @@
       {
         "name": "Clone ischia repository",
         "ansible.builtin.git": {
-          "repo": "https://github.com/steve4650/ischia.git",
-          "dest": "/home/steve/.local/bin/ischia",
+          "repo": "https://github.com/steve4650/andromeda.git",
+          "dest": "/home/steve/.local/bin/andromeda",
           "clone": true
         },
         "become": "yes",
@@ -94,7 +94,7 @@
           "name": "Update Cloudflare IPv4 DNS record",
           "user": "steve",
           "minute": "1,16,31,46",
-          "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv --directory /home/steve/.local/bin/ischia/ansible/roles/andromeda/files run vpn_update.py --ipv4-only"
+          "job": "CLOUDFLARE_API_TOKEN=\"{{ CLOUDFLARE_API_TOKEN }}\" A_DNS_RECORD_ID=\"{{ A_DNS_RECORD_ID }}\" ZONE_ID=\"{{ ZONE_ID }}\" uv --directory /home/steve/.local/bin/andromeda/ansible/roles/andromeda/files run vpn_update.py --ipv4-only"
         },
         "become": "yes",
         "when": "ansible_facts['hostname'] in groups['ischia_group']"
