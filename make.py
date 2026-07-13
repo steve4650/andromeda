@@ -291,6 +291,7 @@ tasks = {
     "deploy": deploy,
     "dev": dev,
     "fmt": fmt,
+    "hydrate_secrets": hydrate_secrets,
     "lint_ansible": lint_ansible,
     "lint_csv": lint_csv,
     "lint": lint,
