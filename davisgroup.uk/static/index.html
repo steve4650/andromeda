@@ -6,6 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="favicon-32x32.png" />
     <link rel="stylesheet" href="index.css" />
+    <script>
+      // Enforce system color scheme: clear any persisted theme and remove toggle UI
+      (function () {
+        try {
+          localStorage.removeItem('theme');
+        } catch (e) {}
+        // Remove any data-theme attribute so CSS can rely on prefers-color-scheme
+        document.documentElement.removeAttribute('data-theme');
+        function removeToggle() {
+          var t = document.getElementById('theme-toggle');
+          if (t && t.parentNode) t.parentNode.removeChild(t);
+          var c = document.querySelector('.theme-toggle-container');
+          if (c && c.parentNode) c.parentNode.removeChild(c);
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', removeToggle);
+        } else {
+          removeToggle();
+        }
+      })();
+    </script>
   </head>
 
   <body>

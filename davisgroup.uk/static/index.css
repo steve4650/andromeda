@@ -184,3 +184,14 @@ ul {
     border-color: #666;
   }
 }
+
+/* Hide any leftover theme-toggle UI when present (deployed sites may inject a toggle). */
+.theme-toggle-container,
+#theme-toggle {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
