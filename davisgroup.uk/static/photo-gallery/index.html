@@ -5,11 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>davisgroup.uk Photo Gallery</title>
     <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #000000;
+        --modal-bg: rgba(0, 0, 0, 0.9);
+      }
+
       body {
         margin: 0;
-        background-color: #000;
-        color: #fff;
+        background-color: var(--bg);
+        color: var(--fg);
         font-family: Arial, sans-serif;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #000000;
+          --fg: #ffffff;
+          --modal-bg: rgba(0, 0, 0, 0.9);
+        }
       }
 
       .gallery {

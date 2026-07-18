@@ -1,6 +1,16 @@
-* {
-  color: black;
+:root {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #f5f5f5;
+  --button-bg: #ffffff;
+  --button-fg: #000000;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
   font: 1em sans-serif;
+  margin: 0;
 }
 
 .colflex {
@@ -139,4 +149,38 @@ ul {
 
 #copy-button:focus {
   outline: 3px solid rgba(0, 102, 204, 0.25);
+}
+
+/* Respect system color scheme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0b0e;
+    --fg: #e6e6e6;
+    --muted: #1b1b1b;
+    --button-bg: #222222;
+    --button-fg: #ffffff;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  pre,
+  .sourceCode {
+    background: var(--muted);
+    color: var(--fg);
+  }
+
+  #copy-button {
+    background: var(--button-bg);
+    color: var(--button-fg);
+    border-color: #444;
+  }
+
+  #copy-button:hover,
+  #copy-button:focus {
+    background: #333333;
+    border-color: #666;
+  }
 }
