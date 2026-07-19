@@ -193,9 +193,10 @@ def compress() -> None:
 
 
 def build_static() -> None:
-    """compile Markdown writeupes in writeups/"""
+    """compile static projects to dist/"""
     log.info("task: build_static")
     sh("bash", str(ROOT / "davisgroup.uk" / "writeups" / "compile"))
+    sh("rsync", "-rv", str(ROOT / "davisgroup.uk" / "static") + "/", str(ROOT / "davisgroup.uk" / "dist") + "/")
 
 
 def build_liturgical() -> None:
@@ -224,12 +225,6 @@ def lint_csv() -> None:
         sys.exit(1)
 
 
-def cp_static() -> None:
-    """copies static web files into dist/"""
-    log.info("task: cp_static")
-    sh("rsync", "-rv", str(ROOT / "davisgroup.uk" / "static") + "/", str(ROOT / "davisgroup.uk" / "dist") + "/")
-
-
 def commit_hash() -> None:
     """copies current commit hashinto dist/"""
     log.info("task: commit_hash")
@@ -244,7 +239,6 @@ def build() -> None:
     build_npm()
     build_liturgical()
     build_static()
-    cp_static()
     commit_hash()
     compress()
 
@@ -286,7 +280,6 @@ tasks = {
     "build_static": build_static,
     "build": build,
     "compress": compress,
-    "cp_static": cp_static,
     "deploy_test": deploy_test,
     "deploy": deploy,
     "dev": dev,
