@@ -247,7 +247,7 @@ def dev() -> None:
     """build, then run a local web server to serve the dist/ directory for development"""
     log.info("task: dev")
     build()
-    sh("python3", "-m", "http.server", "-d", str(ROOT / "davisgroup.uk" / "dist"), "50000")
+    sh("uv", "run", "python3", "-m", "http.server", "-d", str(ROOT / "davisgroup.uk" / "dist"), "50000")
 
 
 def fmt() -> None:
