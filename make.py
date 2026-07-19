@@ -176,7 +176,7 @@ def lint_secrets(already_hydrated=False) -> None:
         secret_path = str(secret_file)
         try:
             repo.index[secret_path]
-            log.error(f"Secret file {secret_path} exists in the repo; it should not be checked in. If this was pushed to GitHub, rotate this secret immediately.")
+            log.error(f"Secret file {secret_path} exists in the repo!!! It should not be checked in to Git. If this was pushed to GitHub, rotate this secret immediately!!!")
             raise SystemExit(1)
         except KeyError:
             pass
