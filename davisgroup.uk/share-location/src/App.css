@@ -1,3 +1,39 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #27272a;
+  --link-color: #000000;
+  --link-hover: #404040;
+  --border-color: #d4d4d8;
+  --input-bg: #ffffff;
+  --button-bg: #ffffff;
+  --button-hover-bg: #f4f4f5;
+  --button-border: #27272a;
+  --button-text: #27272a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #18181b;
+    --text-color: #d4d4d8;
+    --link-color: #ffffff;
+    --link-hover: #cccccc;
+    --border-color: #3f3f46;
+    --input-bg: #27272a;
+    --button-bg: #3b3b40;
+    --button-hover-bg: #52525b;
+    --button-border: #a1a1aa;
+    --button-text: #ffffff;
+  }
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -17,10 +53,21 @@
 
 button,
 input[type="button"] {
-  border: 1px solid black;
-  background-color: white;
+  border: 1px solid var(--button-border);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   font: inherit;
   cursor: pointer;
+  padding: 0.25rem 0.75rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+button:hover:not(:disabled),
+input[type="button"]:hover:not(:disabled) {
+  background-color: var(--button-hover-bg);
 }
 
 button:disabled,
@@ -32,10 +79,16 @@ input[type="button"]:disabled {
 #demo-map {
   width: 300px;
   height: 300px;
+  border: 1px solid var(--border-color);
 }
 
 a {
-  color: black;
+  color: var(--link-color);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--link-hover);
 }
 
 .recent {
@@ -66,7 +119,7 @@ a {
   justify-content: space-between;
   align-items: flex-start;
   padding: 0.5% 0;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--border-color);
 }
 
 .entry-info {
@@ -91,8 +144,9 @@ a {
 }
 
 .icon-button {
-  border: 1px solid black;
-  background-color: white;
+  border: 1px solid var(--button-border);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -100,10 +154,16 @@ a {
   padding: 2px 4px;
 }
 
+.icon-button:hover {
+  background-color: var(--button-hover-bg);
+}
+
 .entry-edit-note textarea {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid black;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  color: var(--text-color);
   font: inherit;
   margin-top: 0.5em;
 }
