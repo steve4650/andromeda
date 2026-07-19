@@ -15,7 +15,9 @@ import os
 import pathlib
 import subprocess
 import sys
+from pathlib import Path, PurePath
 
+import pygit2
 import structlog
 
 log = structlog.get_logger()
@@ -148,6 +150,37 @@ def lint_ansible() -> None:
     lint_ansible_role_dirs()
 
 
+def lint_secrets(already_hydrated=False) -> None:
+    """lint that secrets are not checked into the repo"""
+    log.info("task: lint_secrets")
+    secret_files_path = ROOT / "secret-files.json"
+    if not secret_files_path.exists():
+        log.error("Secret files list does not exist; cannot lint secrets.")
+        raise SystemExit(1)
+
+    with open(secret_files_path, encoding="utf-8") as f:
+        secret_files = json.load(f)
+
+    repo = pygit2.Repository(ROOT)
+    for secret_path in secret_files.get("secrets", []):
+        # normalize to same format Git should use - no leading ./
+        secret_file = PurePath(secret_path)
+        if (not Path(secret_file).exists()) and (not already_hydrated):
+            log.warning(f"Secret file {secret_file} does not exist; running hydrate_secrets.")
+            hydrate_secrets()
+        elif already_hydrated:
+            log.error(f"Secret file {secret_file} does not exist in this repo.")
+            raise SystemExit(1)
+        secret_path = str(secret_file)
+        try:
+            repo.index[secret_path]
+            log.error(f"Secret file {secret_path} exists in the repo; it should not be checked in. If this was pushed to GitHub, rotate this secret immediately.")
+            raise SystemExit(1)
+        except KeyError:
+            pass
+    log.info("✓ No secret files are checked into the repo.")
+
+
 tasks = {}
 
 
@@ -272,6 +305,7 @@ def lint() -> None:
     sh("bun", "run", "oxfmt", "--check")
     lint_ansible()
     lint_csv()
+    lint_secrets()
 
 
 tasks = {
@@ -287,6 +321,7 @@ tasks = {
     "hydrate_secrets": hydrate_secrets,
     "lint_ansible": lint_ansible,
     "lint_csv": lint_csv,
+    "lint_secrets": lint_secrets,
     "lint": lint,
 }
 
