@@ -32,16 +32,6 @@ function App() {
   const [editingNote, setEditingNote] = useState("");
 
   useEffect(() => {
-    const storedTheme = window.localStorage.getItem("theme");
-    if (storedTheme === "dark" || storedTheme === "light") {
-      document.documentElement.setAttribute("data-theme", storedTheme);
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-    }
-  }, []);
-
-  useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {

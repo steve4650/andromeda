@@ -7,16 +7,6 @@ function App() {
     loadData = JSON.parse(decodeURI(window.location.hash.slice(1)));
   }
 
-  useEffect(() => {
-    const storedTheme = window.localStorage.getItem("theme");
-    if (storedTheme === "dark" || storedTheme === "light") {
-      document.documentElement.setAttribute("data-theme", storedTheme);
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-    }
-  }, []);
-
   const [currentInput, setCurrentInput] = useState("html");
   const [htmlInputText, setHtmlInputText] = useState(loadData.html);
   const [cssInputText, setCssInputText] = useState(loadData.css);

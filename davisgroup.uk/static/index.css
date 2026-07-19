@@ -2,8 +2,8 @@
   --bg-color: #ffffff;
   --text-color: #27272a;
   --heading-color: #09090b;
-  --link-color: #2563eb;
-  --link-hover: #1d4ed8;
+  --link-color: #000000;
+  --link-hover: #404040;
   --border-color: #e4e4e7;
   --code-bg: #f4f4f5;
   --button-bg: #ffffff;
@@ -17,8 +17,8 @@
     --bg-color: #18181b;
     --text-color: #d4d4d8;
     --heading-color: #fafafa;
-    --link-color: #60a5fa;
-    --link-hover: #93c5fd;
+    --link-color: #ffffff;
+    --link-hover: #cccccc;
     --border-color: #3f3f46;
     --code-bg: #27272a;
     --button-bg: #27272a;
