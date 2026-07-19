@@ -15,7 +15,9 @@ import os
 import pathlib
 import subprocess
 import sys
+from pathlib import Path, PurePath
 
+import pygit2
 import structlog
 
 log = structlog.get_logger()
@@ -53,7 +55,7 @@ def hydrate_secrets() -> None:
         source_path = source_dir / secret
         dest_path = ROOT / secret
         if not source_path.exists():
-            log.error(f"Secret file {source_path} does not exist; skipping.")
+            log.warning(f"Secret file {source_path} does not exist; cannot hydrate this file.")
             continue
         dest_path.parent.mkdir(parents=True, exist_ok=True)
         sh("cp", "-v", str(source_path), str(dest_path))
@@ -148,6 +150,42 @@ def lint_ansible() -> None:
     lint_ansible_role_dirs()
 
 
+def lint_secrets(already_hydrated=False) -> None:
+    """lint that secrets are not checked into the repo"""
+    log.info("task: lint_secrets")
+    secret_files_path = ROOT / "secret-files.json"
+    if not secret_files_path.exists():
+        log.error("Secret files list does not exist; cannot lint secrets.")
+        raise SystemExit(1)
+
+    with open(secret_files_path, encoding="utf-8") as f:
+        secret_files = json.load(f)
+
+    repo = pygit2.Repository(ROOT)
+    for secret_path in secret_files.get("secrets", []):
+        # normalize to same format Git should use - no leading ./
+        secret_file = PurePath(secret_path)
+        # skip this check if running in GitHub Actions, since secret files will not exist there (hopefully)
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            log.info("Running in GitHub Actions; skipping secret file existence check.")
+        elif not Path(secret_file).exists():
+            if not already_hydrated:
+                log.warning(f"Secret file {secret_file} does not exist; running hydrate_secrets then rerunning lint_secrets.")
+                hydrate_secrets()
+                lint_secrets(already_hydrated=True)
+            else:
+                log.error(f"Secret file {secret_file} does not exist in this repo.")
+                raise SystemExit(1)
+        secret_path = str(secret_file)
+        try:
+            repo.index[secret_path]
+            log.error(f"Secret file {secret_path} exists in the repo!!! It should not be checked in to Git. If this was pushed to GitHub, rotate this secret immediately!!!")
+            raise SystemExit(1)
+        except KeyError:
+            pass
+    log.info("✓ No secret files are checked into the repo.")
+
+
 tasks = {}
 
 
@@ -193,9 +231,10 @@ def compress() -> None:
 
 
 def build_static() -> None:
-    """compile Markdown writeupes in writeups/"""
+    """compile static projects to dist/"""
     log.info("task: build_static")
     sh("bash", str(ROOT / "davisgroup.uk" / "writeups" / "compile"))
+    sh("rsync", "-rv", str(ROOT / "davisgroup.uk" / "static") + "/", str(ROOT / "davisgroup.uk" / "dist") + "/")
 
 
 def build_liturgical() -> None:
@@ -224,12 +263,6 @@ def lint_csv() -> None:
         sys.exit(1)
 
 
-def cp_static() -> None:
-    """copies static web files into dist/"""
-    log.info("task: cp_static")
-    sh("rsync", "-rv", str(ROOT / "davisgroup.uk" / "static") + "/", str(ROOT / "davisgroup.uk" / "dist") + "/")
-
-
 def commit_hash() -> None:
     """copies current commit hashinto dist/"""
     log.info("task: commit_hash")
@@ -244,7 +277,6 @@ def build() -> None:
     build_npm()
     build_liturgical()
     build_static()
-    cp_static()
     commit_hash()
     compress()
 
@@ -253,7 +285,7 @@ def dev() -> None:
     """build, then run a local web server to serve the dist/ directory for development"""
     log.info("task: dev")
     build()
-    sh("python3", "-m", "http.server", "-d", str(ROOT / "davisgroup.uk" / "dist"), "50000")
+    sh("uv", "run", "python3", "-m", "http.server", "-d", str(ROOT / "davisgroup.uk" / "dist"), "50000")
 
 
 def fmt() -> None:
@@ -278,6 +310,7 @@ def lint() -> None:
     sh("bun", "run", "oxfmt", "--check")
     lint_ansible()
     lint_csv()
+    lint_secrets()
 
 
 tasks = {
@@ -286,7 +319,6 @@ tasks = {
     "build_static": build_static,
     "build": build,
     "compress": compress,
-    "cp_static": cp_static,
     "deploy_test": deploy_test,
     "deploy": deploy,
     "dev": dev,
@@ -294,6 +326,7 @@ tasks = {
     "hydrate_secrets": hydrate_secrets,
     "lint_ansible": lint_ansible,
     "lint_csv": lint_csv,
+    "lint_secrets": lint_secrets,
     "lint": lint,
 }
 
