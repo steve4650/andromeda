@@ -166,7 +166,9 @@ def lint_secrets(already_hydrated=False) -> None:
         # normalize to same format Git should use - no leading ./
         secret_file = PurePath(secret_path)
         # skip this check if running in GitHub Actions, since secret files will not exist there (hopefully)
-        if (os.environ.get("GITHUB_ACTIONS") != "true") and (not Path(secret_file).exists()):
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            log.info("Running in GitHub Actions; skipping secret file existence check.")
+        elif not Path(secret_file).exists():
             if not already_hydrated:
                 log.warning(f"Secret file {secret_file} does not exist; running hydrate_secrets then rerunning lint_secrets.")
                 hydrate_secrets()
