@@ -55,7 +55,7 @@ def hydrate_secrets() -> None:
         source_path = source_dir / secret
         dest_path = ROOT / secret
         if not source_path.exists():
-            log.error(f"Secret file {source_path} does not exist; skipping.")
+            log.warning(f"Secret file {source_path} does not exist; cannot hydrate this file.")
             continue
         dest_path.parent.mkdir(parents=True, exist_ok=True)
         sh("cp", "-v", str(source_path), str(dest_path))
@@ -165,12 +165,14 @@ def lint_secrets(already_hydrated=False) -> None:
     for secret_path in secret_files.get("secrets", []):
         # normalize to same format Git should use - no leading ./
         secret_file = PurePath(secret_path)
-        if (not Path(secret_file).exists()) and (not already_hydrated):
-            log.warning(f"Secret file {secret_file} does not exist; running hydrate_secrets.")
-            hydrate_secrets()
-        elif already_hydrated:
-            log.error(f"Secret file {secret_file} does not exist in this repo.")
-            raise SystemExit(1)
+        if not Path(secret_file).exists():
+            if not already_hydrated:
+                log.warning(f"Secret file {secret_file} does not exist; running hydrate_secrets then rerunning lint_secrets.")
+                hydrate_secrets()
+                lint_secrets(already_hydrated=True)
+            else:
+                log.error(f"Secret file {secret_file} does not exist in this repo.")
+                raise SystemExit(1)
         secret_path = str(secret_file)
         try:
             repo.index[secret_path]
