@@ -152,7 +152,7 @@ def lint_ansible() -> None:
 
 def lint_secrets(already_hydrated=False) -> None:
     """lint that secrets are not checked into the repo"""
-    log.info("task: lintjane.d.340@protonmail.com_secrets")
+    log.info("task: lint_secrets")
     secret_files_path = ROOT / "secret-files.json"
     if not secret_files_path.exists():
         log.error("Secret files list does not exist; cannot lint secrets.")
