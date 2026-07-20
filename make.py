@@ -303,8 +303,6 @@ def lint() -> None:
     log.info("task: lint")
     sh("uv", "run", "ruff", "format", "--check")
     sh("uv", "run", "ruff", "check")
-    sh("uv", "run", "ruff", "format", "--check")
-    sh("uv", "run", "ruff", "check")
     sh("bun", "i")
     sh("bun", "run", "oxlint")
     sh("bun", "run", "oxfmt", "--check")
