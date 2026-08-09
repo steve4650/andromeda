@@ -36,7 +36,6 @@
         "become": "yes",
         "when": "ansible_facts['hostname'] in groups['ischia_group']"
       },
-
       {
         "name": "install steve zshrc",
         "ansible.builtin.copy": {
@@ -61,6 +60,18 @@
         },
         "become": "yes",
         "when": "ansible_facts['hostname'] in groups['ischia_group']"
+      },
+      {
+        "name": "install steve gitconfig",
+        "ansible.builtin.copy": {
+          "src": "gitconfig",
+          "dest": "/home/steve/.gitconfig",
+          "owner": "steve",
+          "group": "steve",
+          "mode": "0644",
+          "backup": true
+        },
+        "become": "yes"
       },
       {
         "name": "Create /home/steve/.local directory",
