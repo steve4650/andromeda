@@ -1,7 +1,10 @@
 #!/bin/sh
+mkdir -p ~/logs
 while true
 do
-	swaybg -m fit -i "$(find -L ~/wallpaper -type f | shuf | head -n 1)" -o '*' 1>/dev/null 2>&1 &
+	filepath=$(find -L ~/wallpaper -type f | shuf | head -n 1)
+	echo "$filepath" >> ~/logs/wallpaper.log
+	swaybg -m fit -i "$filepath" -o '*' 1>/dev/null 2>&1 &
 	sleep 120
 	kill $!
 done
