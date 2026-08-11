@@ -2,7 +2,7 @@
 mkdir -p ~/logs
 while true
 do
-	filepath=$(find -L ~/wallpaper -type f | grep -Eiv '\.(mov|avi|mp4|webm|txt|json|db)$' | shuf | head -n 1)
+	filepath=$(find -L ~/wallpaper -type f | grep -Eiv '\.(mov|avi|mp4|webm|txt|json|db|info)$' | shuf | head -n 1)
 	echo "$filepath" >> ~/logs/wallpaper.log
 	swaybg -m fit -i "$filepath" -o '*' 1>/dev/null 2>&1 &
 	sleep 120
