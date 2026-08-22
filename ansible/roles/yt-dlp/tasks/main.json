@@ -1,0 +1,38 @@
+[
+  {
+    "tags": "yt-dlp",
+    "block": [
+      {
+        "name": "Clone yt-dlp repository",
+        "ansible.builtin.git": {
+          "repo": "https://github.com/yt-dlp/yt-dlp.git",
+          "dest": "/home/steve/git/yt-dlp",
+          "update": true,
+          "force": true
+        }
+      },
+      {
+        "name": "Copy yt-dlp executable to user's local bin",
+        "ansible.builtin.copy": {
+          "src": "yt-dlp",
+          "dest": "/home/steve/.local/bin/yt-dlp",
+          "mode": "0744",
+          "owner": "steve",
+          "group": "steve",
+          "backup": true
+        }
+      },
+      {
+        "name": "Copy yt-dlp.conf",
+        "ansible.builtin.copy": {
+          "src": "yt-dlp.conf",
+          "dest": "/home/steve/yt-dlp.conf",
+          "mode": "0644",
+          "owner": "steve",
+          "group": "steve",
+          "backup": true
+        }
+      }
+    ]
+  }
+]
