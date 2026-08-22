@@ -20,7 +20,7 @@
     "hosts": "ischia_group",
     "strategy": "free",
     "vars_files": ["../vars/secrets.yml"],
-    "roles": [{ "name": "gnuplex_display" }, { "name": "git" }]
+    "roles": [{ "name": "gnuplex_display" }, { "name": "git" }, { "name": "yt-dlp" }]
   },
   {
     "name": "davisgroup.uk only tasks",
