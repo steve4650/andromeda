@@ -38,6 +38,7 @@ excludesfile = ~/.gitignore_global
 
 [push]
 default = current
+autoSetupRemote = true
 
 [pull]
 ff = only
