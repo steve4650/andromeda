@@ -13,6 +13,13 @@ interface DisplayEvent {
 
 const KNOWN_QUALIFIERS = new Set(["solemnity", "holyday of obligation", "feast"]);
 
+function readBadges(categories: unknown): string[] {
+  const values = Array.isArray(categories) ? categories : categories ? [categories] : [];
+  return values
+    .map((value) => (typeof value === "string" ? value : String(value)).trim())
+    .filter((value) => KNOWN_QUALIFIERS.has(value.toLowerCase()));
+}
+
 export default function LiturgicalCalendar() {
   const [copyStatus, setCopyStatus] = useState("Copy link");
   const [events, setEvents] = useState<DisplayEvent[]>([]);
@@ -81,27 +88,8 @@ export default function LiturgicalCalendar() {
             const eventDate = item.start instanceof Date ? item.start : new Date(item.start);
 
             if (eventDate >= rangeStart && eventDate <= rangeEnd) {
-              const rawSummary = item.summary ?? "Liturgical Event";
-
-              // Only trailing parentheticals matching a known qualifier are badges,
-              // e.g. "All Saints (Solemnity)". Descriptions may themselves contain
-              // parentheses (e.g. "... Faithful Departed (All Souls' Day)") which
-              // must stay part of the title.
-              const qualifierMatch = rawSummary.match(/^(.*?)\s*\(([^()]*)\)$/);
-              let title = rawSummary;
-              const badges: string[] = [];
-
-              if (qualifierMatch) {
-                const qualifiers = qualifierMatch[2]
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter((s) => KNOWN_QUALIFIERS.has(s.toLowerCase()));
-
-                if (qualifiers.length > 0) {
-                  title = qualifierMatch[1].trim();
-                  badges.push(...qualifiers);
-                }
-              }
+              const title = item.summary ?? "Liturgical Event";
+              const badges = readBadges((item as { categories?: unknown }).categories);
 
               filteredEvents.push({
                 uid: item.uid ?? key,
