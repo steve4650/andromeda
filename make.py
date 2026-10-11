@@ -190,21 +190,20 @@ tasks = {}
 
 
 def build_npm() -> None:
-    """build node web projects maintained in this repo into dist/"""
+    """build node web project maintained in this repo into dist/"""
     log.info("task: build_npm")
-    for project in ["share-location", "chikorita", "freebee"]:
-        destination = ROOT / "davisgroup.uk" / "dist" / project
-        destination.mkdir(parents=True, exist_ok=True)
-        sh("bun", "i", "--cwd", str(ROOT / "davisgroup.uk" / project))
-        sh("bun", "run", "--cwd", str(ROOT / "davisgroup.uk" / project), "build")
+    web_dir = ROOT / "davisgroup.uk"
+    dist_dir = web_dir / "dist"
+    dist_dir.mkdir(parents=True, exist_ok=True)
+    sh("bun", "i", "--cwd", str(web_dir))
+    sh("bun", "run", "--cwd", str(web_dir), "build")
 
-    sh(
-        "rsync",
-        "-rv",
-        "--delete",
-        str(ROOT / "davisgroup.uk" / "freebee" / "api") + "/",
-        str(ROOT / "davisgroup.uk" / "dist" / "freebee" / "api") + "/",
-    )
+    # Mirror dist/index.html to subproject routes for static file servers
+    index_html = dist_dir / "index.html"
+    for project in ["share-location", "chikorita", "freebee", "liturgical_calendar"]:
+        destination = dist_dir / project
+        destination.mkdir(parents=True, exist_ok=True)
+        sh("cp", "-f", str(index_html), str(destination / "index.html"))
 
 
 def compress() -> None:
@@ -238,9 +237,14 @@ def build_static() -> None:
 
 
 def build_liturgical() -> None:
-    """builds the liturgical calendar maintained in litigurical_calendar"""
+    """builds the liturgical calendar maintained in liturgical_calendar"""
     log.info("task: build_liturgical")
     sh("uv", "run", "davisgroup.uk/liturgical_calendar/generate_ical.py")
+    dist_ics = ROOT / "davisgroup.uk" / "dist" / "liturgy.ics"
+    public_ics = ROOT / "davisgroup.uk" / "public" / "liturgy.ics"
+    if dist_ics.exists():
+        public_ics.parent.mkdir(parents=True, exist_ok=True)
+        sh("cp", "-f", str(dist_ics), str(public_ics))
 
 
 def lint_csv() -> None:
@@ -274,8 +278,8 @@ def commit_hash() -> None:
 
 def build() -> None:
     """run all build tasks"""
-    build_npm()
     build_liturgical()
+    build_npm()
     build_static()
     commit_hash()
     compress()

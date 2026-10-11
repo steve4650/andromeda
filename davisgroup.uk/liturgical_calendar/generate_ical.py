@@ -15,16 +15,6 @@ OUTPUT_FILENAME = "../dist/liturgy.ics"
 QUALIFIER_FIELDS = ["Solemnity", "Holyday of Obligation", "Feast"]
 
 
-def normalize_qualifier(value: str) -> str:
-    return value.strip()
-
-
-def get_event_summary(description: str, qualifiers: list[str]) -> str:
-    if qualifiers:
-        return f"{description} ({', '.join(qualifiers)})"
-    return description
-
-
 def parse_bool(value: str) -> bool:
     return value.strip().lower() in {"true", "1", "yes", "y", "t"}
 
@@ -61,7 +51,7 @@ def build_ical(events: list[dict[str, str]], now: datetime.datetime) -> str:
 
         description = row["Description"].strip()
         qualifiers = [field for field in QUALIFIER_FIELDS if row.get(field) and parse_bool(row[field])]
-        summary = get_event_summary(description, qualifiers)
+        summary = description
         uid = build_uid(event_date, summary)
 
         event = Event()
@@ -70,6 +60,8 @@ def build_ical(events: list[dict[str, str]], now: datetime.datetime) -> str:
         event.add("dtstart", event_date)
         event.add("dtend", event_date + datetime.timedelta(days=1))
         event.add("summary", summary)
+        if qualifiers:
+            event.add("categories", qualifiers)
         event.add("transp", "TRANSPARENT")
         calendar.add_component(event)
 
