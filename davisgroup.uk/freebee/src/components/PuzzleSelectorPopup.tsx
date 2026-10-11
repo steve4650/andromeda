@@ -1,19 +1,24 @@
 import type { Puzzles } from "../Game";
 
-function PuzzleSelectorPopup(props: {
+function PuzzleSelectorPopup({
+  puzzles,
+  setPuzzleID,
+  loading: _loading,
+  ref,
+}: {
   puzzles: Puzzles | null;
   setPuzzleID: React.Dispatch<React.SetStateAction<string | null>>;
   loading: boolean;
-  ref: React.RefObject<null>;
+  ref: React.RefObject<HTMLDialogElement | null>;
 }) {
   return (
-    <dialog ref={props.ref} className="modal">
+    <dialog ref={ref} className="modal">
       <div className="modal-box bg-stone-800">
         <h3 className="font-bold text-lg text-stone-200 my-2">More Puzzles</h3>
         <ul className="list-disc list-inside">
-          {props.puzzles === null
+          {puzzles === null
             ? null
-            : Object.keys(props.puzzles)
+            : Object.keys(puzzles)
                 .sort()
                 .reverse()
                 .map((id) => (
@@ -22,10 +27,9 @@ function PuzzleSelectorPopup(props: {
                       className="text-blue-300"
                       href={`#${id}`}
                       onClick={() => {
-                        props.setPuzzleID(id);
-                        if (props.ref.current !== null) {
-                          //@ts-expect-error
-                          props.ref.current.close();
+                        setPuzzleID(id);
+                        if (ref.current !== null) {
+                          ref.current.close();
                         }
                       }}
                     >
@@ -41,10 +45,8 @@ function PuzzleSelectorPopup(props: {
               className="button bg-yellow-200 text-stone-800 py-1 px-2"
               onClick={() => {
                 console.log("a");
-                if (props.ref.current !== null) {
-                  console.log(props.ref.current);
-                  //@ts-expect-error
-                  props.ref.current.close();
+                if (ref.current !== null) {
+                  ref.current.close();
                 }
               }}
             >

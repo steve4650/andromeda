@@ -1,6 +1,6 @@
-function HowToPlayPopup(props: { ref: React.RefObject<null> }) {
+function HowToPlayPopup({ ref }: { ref: React.RefObject<HTMLDialogElement | null> }) {
   return (
-    <dialog ref={props.ref} className="modal">
+    <dialog ref={ref} className="modal">
       <div className="modal-box bg-stone-800">
         <h3 className="font-bold text-lg text-stone-200 my-2">How to Play</h3>
         <p className="my-1">Guess words which using only the 7 letters on the board.</p>
@@ -15,10 +15,8 @@ function HowToPlayPopup(props: { ref: React.RefObject<null> }) {
               className="button bg-yellow-200 text-stone-800 py-1 px-2"
               onClick={() => {
                 console.log("a");
-                if (props.ref.current !== null) {
-                  console.log(props.ref.current);
-                  //@ts-expect-error
-                  props.ref.current.close();
+                if (ref.current !== null) {
+                  ref.current.close();
                 }
               }}
             >

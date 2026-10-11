@@ -25,31 +25,54 @@ function App() {
     latitude: null,
     longitude: null,
   });
-  const [shareData, setShareData] = useState("");
   const [map, setMap] = useState<OpenMap | null>(null);
-  const [recentLocations, setRecentLocations] = useState<LocationEntry[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editingNote, setEditingNote] = useState("");
-
-  useEffect(() => {
+  const [recentLocations, setRecentLocations] = useState<LocationEntry[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        const parsed: LocationEntry[] = JSON.parse(stored);
-        setRecentLocations(parsed);
+        return JSON.parse(stored);
       } catch {
         window.localStorage.removeItem(STORAGE_KEY);
       }
     }
-  }, []);
+    return [];
+  });
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingNote, setEditingNote] = useState("");
+
+  const shareData =
+    pos.latitude !== null && pos.longitude !== null
+      ? `My location\n\nGoogle Maps link: ${buildMapsLink(pos.latitude, pos.longitude, "google")}\n\nApple Maps link: ${buildMapsLink(pos.latitude, pos.longitude, "apple")}\n\nhttps://davisgroup.uk/share-location`
+      : "";
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (newpos) => {
-          setPos({
-            latitude: newpos.coords.latitude,
-            longitude: newpos.coords.longitude,
+          const latitude = newpos.coords.latitude;
+          const longitude = newpos.coords.longitude;
+          setPos({ latitude, longitude });
+
+          const newEntry: LocationEntry = {
+            latitude,
+            longitude,
+            timestamp: Date.now(),
+          };
+
+          setRecentLocations((current) => {
+            if (
+              current.length > 0 &&
+              current[0].latitude === newEntry.latitude &&
+              current[0].longitude === newEntry.longitude
+            ) {
+              return current;
+            }
+            const next = [newEntry, ...current].slice(0, 20);
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+            return next;
           });
         },
         (error) => {
@@ -60,33 +83,6 @@ function App() {
       console.log("geolocation not available");
     }
   }, []);
-
-  useEffect(() => {
-    if (pos.latitude !== null && pos.longitude !== null) {
-      setShareData(
-        `My location\n\nGoogle Maps link: ${buildMapsLink(pos.latitude, pos.longitude, "google")}\n\nApple Maps link: ${buildMapsLink(pos.latitude, pos.longitude, "apple")}\n\nhttps://davisgroup.uk/share-location`,
-      );
-
-      const newEntry: LocationEntry = {
-        latitude: pos.latitude,
-        longitude: pos.longitude,
-        timestamp: Date.now(),
-      };
-
-      setRecentLocations((current) => {
-        if (
-          current.length > 0 &&
-          current[0].latitude === newEntry.latitude &&
-          current[0].longitude === newEntry.longitude
-        ) {
-          return current;
-        }
-        const next = [newEntry, ...current].slice(0, 20);
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-        return next;
-      });
-    }
-  }, [pos]);
 
   const saveNoteForEntry = (entryId: number, note: string) => {
     setRecentLocations((current) => {
