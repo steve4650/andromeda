@@ -1,7 +1,7 @@
 function HowToPlayPopup({ ref }: { ref: React.RefObject<HTMLDialogElement | null> }) {
   return (
     <dialog ref={ref} className="modal">
-      <div className="modal-box bg-stone-800">
+      <div className="modal-box bg-stone-800 text-stone-200">
         <h3 className="font-bold text-lg text-stone-200 my-2">How to Play</h3>
         <p className="my-1">Guess words which using only the 7 letters on the board.</p>
         <p className="my-1">4-letter words are 1 point, 5-letter words are 2 points, and so on.</p>

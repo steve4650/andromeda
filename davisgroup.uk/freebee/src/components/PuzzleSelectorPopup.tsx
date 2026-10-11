@@ -13,7 +13,7 @@ function PuzzleSelectorPopup({
 }) {
   return (
     <dialog ref={ref} className="modal">
-      <div className="modal-box bg-stone-800">
+      <div className="modal-box bg-stone-800 text-stone-200">
         <h3 className="font-bold text-lg text-stone-200 my-2">More Puzzles</h3>
         <ul className="list-disc list-inside">
           {puzzles === null
