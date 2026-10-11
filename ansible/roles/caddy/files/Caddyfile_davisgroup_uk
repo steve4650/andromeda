@@ -8,6 +8,7 @@ janie.page {
 
 davisgroup.uk {
   root * /var/www/html
+  try_files {path} {path}/ /index.html
   file_server {
     precompressed gzip zstd
   }

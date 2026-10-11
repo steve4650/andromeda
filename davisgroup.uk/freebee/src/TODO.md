@@ -1,4 +1,0 @@
-- accepts "mount" - need to check subbset of legal letters ;)
-- menu selection of puzzlles
-- CDN endpoints for puzzle data, words
-- don't let words block page load
