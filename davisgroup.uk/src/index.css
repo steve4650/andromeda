@@ -14,6 +14,7 @@
 
 :root {
   --bg-color: #ffffff;
+  --root-bg: var(--bg-color); /* keep daisyUI's page background in sync with ours */
   --text-color: #27272a;
   --heading-color: #09090b;
   --link-color: #000000;
@@ -43,6 +44,10 @@
 }
 
 @layer base {
+  html {
+    transition: background-color 0.3s ease;
+  }
+
   body {
     background-color: var(--bg-color);
     color: var(--text-color);
