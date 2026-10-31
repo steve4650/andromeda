@@ -77,12 +77,14 @@ body {
 }
 
 #picdiv {
+  flex: 1;
   max-width: 80%;
   min-width: 400px;
   margin-bottom: 5%;
 }
 
 #linkdiv {
+  flex: 3;
   min-width: 400px;
   margin-bottom: 5%;
 }

@@ -8,16 +8,6 @@ interface DisplayEvent {
   uid: string;
   date: Date;
   title: string;
-  badges: string[];
-}
-
-const KNOWN_QUALIFIERS = new Set(["solemnity", "holyday of obligation", "feast"]);
-
-function readBadges(categories: unknown): string[] {
-  const values = Array.isArray(categories) ? categories : categories ? [categories] : [];
-  return values
-    .map((value) => (typeof value === "string" ? value : String(value)).trim())
-    .filter((value) => KNOWN_QUALIFIERS.has(value.toLowerCase()));
 }
 
 export default function LiturgicalCalendar() {
@@ -88,14 +78,10 @@ export default function LiturgicalCalendar() {
             const eventDate = item.start instanceof Date ? item.start : new Date(item.start);
 
             if (eventDate >= rangeStart && eventDate <= rangeEnd) {
-              const title = item.summary ?? "Liturgical Event";
-              const badges = readBadges((item as { categories?: unknown }).categories);
-
               filteredEvents.push({
                 uid: item.uid ?? key,
                 date: eventDate,
-                title,
-                badges,
+                title: item.summary ?? "Liturgical Event",
               });
             }
           }
@@ -116,9 +102,8 @@ export default function LiturgicalCalendar() {
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString(undefined, {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
+      weekday: "short",
+      month: "short",
       day: "numeric",
     });
   };
@@ -171,54 +156,33 @@ export default function LiturgicalCalendar() {
       </ol>
 
       <section className="upcoming-events-section">
-        <div className="upcoming-events-header">
-          <span className="subtitle">Upcoming Events (Next Month)</span>
-          <span className="upcoming-events-range">{rangeDescription}</span>
-        </div>
+        <span className="subtitle">Upcoming Events</span>
+        <p className="events-range">Next month ({rangeDescription})</p>
 
-        {loading && <div className="events-loading">Loading upcoming events...</div>}
+        {loading && <p>Loading upcoming events...</p>}
 
         {error && (
-          <div className="events-error">
+          <>
             <p>Could not load calendar events: {error}</p>
             <p>You can still subscribe using the link above.</p>
-          </div>
+          </>
         )}
 
         {!loading && !error && events.length === 0 && (
-          <div className="events-empty">No events scheduled for the next upcoming month.</div>
+          <p>No events scheduled for the next month.</p>
         )}
 
         {!loading && !error && events.length > 0 && (
-          <div className="events-list">
+          <ul className="events-list">
             {events.map((event) => (
-              <div key={event.uid} className="event-card">
-                <div className="event-details">
-                  <div className="event-date">{formatDate(event.date)}</div>
-                  <div className="event-summary">{event.title}</div>
-                </div>
-                {event.badges.length > 0 && (
-                  <div className="event-badges">
-                    {event.badges.map((badge) => {
-                      const lower = badge.toLowerCase();
-                      const badgeClass = lower.includes("solemnity")
-                        ? "badge-solemnity"
-                        : lower.includes("obligation")
-                          ? "badge-obligation"
-                          : lower.includes("feast")
-                            ? "badge-feast"
-                            : "";
-                      return (
-                        <span key={badge} className={`event-badge ${badgeClass}`}>
-                          {badge}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+              <li key={event.uid}>
+                <time className="event-date" dateTime={event.date.toISOString().slice(0, 10)}>
+                  {formatDate(event.date)}
+                </time>{" "}
+                {event.title}
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
     </div>
