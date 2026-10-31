@@ -131,7 +131,7 @@ export default function LiturgicalCalendar() {
         . Subscribe using the iPhone Calendar app, Google Calendar, et cetera!
       </p>
 
-      <p className="subtitle">Instructions:</p>
+      <p className="subtitle instructions-title">Instructions:</p>
       <ol>
         <li>
           Copy this link:
@@ -178,8 +178,8 @@ export default function LiturgicalCalendar() {
               <li key={event.uid}>
                 <time className="event-date" dateTime={event.date.toISOString().slice(0, 10)}>
                   {formatDate(event.date)}
-                </time>{" "}
-                {event.title}
+                </time>
+                <span className="event-title">{event.title}</span>
               </li>
             ))}
           </ul>

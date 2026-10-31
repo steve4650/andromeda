@@ -139,9 +139,6 @@ export default function ShareLocation() {
 
   return (
     <div className="share-location-page">
-      <div className="nav-back">
-        <Link to="/">← davisgroup.uk</Link>
-      </div>
       <span className="title">
         <Link to="/">davisgroup.uk</Link> - Share Location
       </span>
@@ -197,7 +194,6 @@ export default function ShareLocation() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ marginRight: "0.25rem", verticalAlign: "middle" }}
             >
               <polyline points="3 6 5 6 21 6" />
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />

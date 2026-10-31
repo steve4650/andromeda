@@ -45,33 +45,35 @@ function ActiveGame({
 
   return (
     <div className="flex flex-col bg-stone-800 w-full min-h-screen p-5 items-center">
-      <div className="flex flex-row place-self-start pb-3 items-center">
-        <Link to="/" className="text-yellow-200 hover:underline mr-4 text-sm font-sans">
+      <div className="flex flex-col place-self-start pb-3">
+        <Link to="/" className="text-yellow-200 hover:underline mb-1 text-sm font-sans">
           ← davisgroup.uk
         </Link>
-        <span className="font-sans text-3xl self-start text-white">FreeBee🐝</span>
-        <button
-          type="button"
-          className="button bg-yellow-200 text-stone-800 ml-2 py-1 px-2 cursor-pointer rounded"
-          onClick={() => {
-            if (choosePuzzleDialog.current !== null) {
-              choosePuzzleDialog.current.showModal();
-            }
-          }}
-        >
-          More
-        </button>
-        <button
-          type="button"
-          className="button bg-yellow-200 text-stone-800 ml-1 py-1 px-2 cursor-pointer rounded"
-          onClick={() => {
-            if (howToPlayDialog.current !== null) {
-              howToPlayDialog.current.showModal();
-            }
-          }}
-        >
-          How to Play
-        </button>
+        <div className="flex flex-row items-center">
+          <span className="font-sans text-3xl text-white">FreeBee🐝</span>
+          <button
+            type="button"
+            className="button bg-yellow-200 text-stone-800 ml-2 py-1 px-2 cursor-pointer rounded"
+            onClick={() => {
+              if (choosePuzzleDialog.current !== null) {
+                choosePuzzleDialog.current.showModal();
+              }
+            }}
+          >
+            More
+          </button>
+          <button
+            type="button"
+            className="button bg-yellow-200 text-stone-800 ml-1 py-1 px-2 cursor-pointer rounded"
+            onClick={() => {
+              if (howToPlayDialog.current !== null) {
+                howToPlayDialog.current.showModal();
+              }
+            }}
+          >
+            How to Play
+          </button>
+        </div>
       </div>
       <GameBoard letters={letters} yellow={yellow} />
       <div className="mt-10">
