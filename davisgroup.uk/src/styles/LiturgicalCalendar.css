@@ -1,0 +1,93 @@
+.liturgical-cal-root {
+  max-width: 800px;
+  margin: 3% auto;
+  padding: 0 1rem;
+}
+
+.liturgical-cal-root .nav-back {
+  margin-bottom: 1rem;
+}
+
+.liturgical-cal-root .nav-back a {
+  text-decoration: underline;
+  color: var(--link-color);
+  font-size: 0.95em;
+}
+
+.liturgical-cal-root .copy-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.liturgical-cal-root .copy-link-row code {
+  display: inline-block;
+  background: var(--code-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+  font-family: monospace;
+}
+
+.liturgical-cal-root #copy-button {
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  color: var(--button-text);
+  padding: 0.2rem 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font: inherit;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.liturgical-cal-root #copy-button:hover,
+.liturgical-cal-root #copy-button:focus {
+  background: var(--button-hover-bg);
+  border-color: var(--button-border);
+}
+
+.liturgical-cal-root #copy-button:focus {
+  outline: 3px solid rgba(0, 102, 204, 0.25);
+}
+
+.liturgical-cal-root .instructions-title {
+  margin-top: 1.75rem;
+}
+
+.upcoming-events-section {
+  margin-top: 1.75rem;
+}
+
+.events-range {
+  margin: 0;
+  font-size: 0.85em;
+  opacity: 0.75;
+}
+
+.events-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.events-list li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  column-gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.event-date {
+  opacity: 0.8;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.event-title {
+  min-width: 0;
+}

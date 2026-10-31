@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@plugin 'daisyui';
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #27272a;
+  --heading-color: #09090b;
+  --link-color: #000000;
+  --link-hover: #404040;
+  --border-color: #e4e4e7;
+  --code-bg: #f4f4f5;
+  --button-bg: #ffffff;
+  --button-hover-bg: #f4f4f5;
+  --button-border: #d4d4d8;
+  --button-text: #27272a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #18181b;
+    --text-color: #d4d4d8;
+    --heading-color: #fafafa;
+    --link-color: #ffffff;
+    --link-hover: #cccccc;
+    --border-color: #3f3f46;
+    --code-bg: #27272a;
+    --button-bg: #27272a;
+    --button-hover-bg: #3f3f46;
+    --button-border: #52525b;
+    --button-text: #e4e4e7;
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family:
+      system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+      sans-serif;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  a {
+    color: var(--link-color);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+}
+
+.colflex {
+  display: flex;
+  flex-direction: column;
+}
+
+.rowflex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.rowflex > * {
+  flex: 1;
+}
+
+.home-root {
+  margin: 3%;
+}
+
+#picdiv {
+  flex: 1;
+  max-width: 80%;
+  min-width: 400px;
+  margin-bottom: 5%;
+}
+
+#linkdiv {
+  flex: 3;
+  min-width: 400px;
+  margin-bottom: 5%;
+}
+
+.projlink {
+  margin-top: 3%;
+  color: var(--link-color);
+  text-decoration: underline;
+  display: block;
+}
+
+.projlink:hover {
+  color: var(--link-hover);
+}
+
+.title {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+
+.subtitle {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 1%;
+}
+
+@media (prefers-color-scheme: dark) {
+  @layer base {
+    img {
+      filter: brightness(0.85) contrast(1.05);
+      transition: filter 0.3s ease;
+    }
+  }
+}
