@@ -240,11 +240,6 @@ def build_liturgical() -> None:
     """builds the liturgical calendar maintained in liturgical_calendar"""
     log.info("task: build_liturgical")
     sh("uv", "run", "davisgroup.uk/liturgical_calendar/generate_ical.py")
-    dist_ics = ROOT / "davisgroup.uk" / "dist" / "liturgy.ics"
-    public_ics = ROOT / "davisgroup.uk" / "public" / "liturgy.ics"
-    if dist_ics.exists():
-        public_ics.parent.mkdir(parents=True, exist_ok=True)
-        sh("cp", "-f", str(dist_ics), str(public_ics))
 
 
 def lint_csv() -> None:
@@ -278,9 +273,9 @@ def commit_hash() -> None:
 
 def build() -> None:
     """run all build tasks"""
-    build_liturgical()
     build_npm()
     build_static()
+    build_liturgical()
     commit_hash()
     compress()
 
