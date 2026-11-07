@@ -142,8 +142,8 @@ export default function LiturgicalCalendar() {
             </button>
           </div>
         </li>
-        <li>
-          Subscribe using one of these instructions:
+        <li className="subscribe-instructions">
+          Then subscribe using one of these instructions:
           <ul>
             <li>
               <a href="https://support.apple.com/en-us/102301">iPhone Calendar</a>
