@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsrs -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -13,7 +13,8 @@
     "ol": "^10.11.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-router-dom": "^7.18.4"
+    "react-router-dom": "^7.18.4",
+    "tsrs": "^0.23.0-ts7.1.0-beta"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -25,7 +26,6 @@
     "daisyui": "^5.7.47",
     "postcss": "^8.5.29",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2",
     "vite": "^8.3.4"
   }
 }
