@@ -49,8 +49,7 @@ def build_ical(events: list[dict[str, str]], now: datetime.datetime) -> str:
         except ValueError as exc:
             raise ValueError(f"Invalid date in CSV: {row['Date']!r}") from exc
 
-        description = row["Description"].strip()
-        qualifiers = [field for field in QUALIFIER_FIELDS if row.get(field) and parse_bool(row[field])]
+        description = row["Description"].strip() + (" (Holyday of Obligation)" if parse_bool(row["Holyday of Obligation"]) else "")
         summary = description
         uid = build_uid(event_date, summary)
 
@@ -60,8 +59,6 @@ def build_ical(events: list[dict[str, str]], now: datetime.datetime) -> str:
         event.add("dtstart", event_date)
         event.add("dtend", event_date + datetime.timedelta(days=1))
         event.add("summary", summary)
-        if qualifiers:
-            event.add("categories", qualifiers)
         event.add("transp", "TRANSPARENT")
         calendar.add_component(event)
 
